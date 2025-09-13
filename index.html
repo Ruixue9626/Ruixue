@@ -3,179 +3,114 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Ruixue 個人網站</title>
+  <title>Ruixue</title>
   <style>
-    html, body {
-      margin:0; padding:0;
-      font-family: "Segoe UI", Roboto, system-ui, -apple-system;
-      background-color: #DBE7F5;
-      color: #000;
-    }
-    /* 頂部橫幅 */
-    .banner {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 64px;
-      background: #A3BFD9;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 20px;
-      box-sizing: border-box;
-      border-bottom-left-radius: 12px;
-      border-bottom-right-radius: 12px;
-      z-index: 10;
-      box-shadow: 0 4px 16px rgba(80, 100, 140, 0.18);
-    }
-    .banner .brand {
-      font-weight: 700;
-      font-size: 20px;
-    }
-    .banner .time {
-      font-weight: 600;
-      font-size: 18px;
-    }
-    /* 主體內容 */
-    .main {
-      margin-top: 100px;
-      padding: 0 20px 50px;
-      max-width: 900px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    /* 區塊卡片 */
-    .section {
-      background: #fff;
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 24px;
-      box-shadow: 0 4px 12px rgba(80, 100, 140, 0.12);
-    }
-    .section h2 {
-      margin-top: 0;
-      font-size: 22px;
-      color: #3f4a60;
-    }
-    .section p {
-      font-size: 16px;
-      line-height: 1.6;
+    body {
       margin: 0;
-    }
-    /* 連結區 */
-    .links {
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      max-width: 400px;
-      margin: 0 auto;
-    }
-    .link-btn {
-      display: flex;
       align-items: center;
-      justify-content: center;
-      min-height: 56px;
-      padding: 10px 18px;
+      justify-content: flex-start;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #a8edea, #fed6e3);
+    }
+
+    h1 {
+      margin: 40px 0 20px;
+      font-size: 2.5rem;
+      color: #333;
+      text-align: center;
+    }
+
+    .glass-card {
+      width: 70%;           /* 寬度縮小 */
+      max-width: 400px;     /* 最大寬度也縮小 */
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 20px;
+      margin: 30px auto;    /* 上下間距加大，左右自動置中 */
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      color: #333;
+      text-align: left; /* 讓文字靠左 */
+    }
+
+    .glass-btn {
+      display: inline-block;
+      width: 80%;          /* 寬度變大 */
+      max-width: 400px;    /* 最大寬度限制 */
+      padding: 20px 0;     /* 高度保持大 */
       border-radius: 16px;
-      border: none;
-      cursor: pointer;
-      background: #fff;
-      font-size: 16px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #333;
+      font-weight: bold;
+      font-size: 1.2rem;
       text-decoration: none;
-      color: #222;
-      font-weight: 600;
-      box-shadow: 0 2px 8px rgba(80, 100, 140, 0.10);
-      transition: background 0.3s, box-shadow 0.3s;
+      transition: 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      text-align: center; /* 只讓按鈕文字靠左 */
     }
-    .link-btn:hover {
-      background: #f0f4fa;
-      box-shadow: 0 4px 16px rgba(80, 100, 140, 0.16);
+
+    .glass-card-1 {
+      width: 70%;           /* 寬度縮小 */
+      max-width: 400px;     /* 最大寬度也縮小 */
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 20px;
+      margin: 30px auto;    /* 上下間距加大，左右自動置中 */
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      color: #333;
+      text-align: center; /* 讓文字靠左 */
     }
-    /* 手機適配 */
-    @media (max-width: 600px) {
-      .section h2 {
-        font-size: 20px;
-      }
-      .section p {
-        font-size: 15px;
-      }
-      .link-btn {
-        font-size: 15px;
-        min-height: 44px;
-      }
+
+    .glass-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
     }
   </style>
 </head>
 <body>
-  <!-- 頂部橫幅 -->
-  <div class="banner">
-    <div class="brand">Ruixue</div>
-    <div class="time" id="time">--:-- --</div>
+  <h1>Ruixue</h1>
+
+  <div class="glass-card">
+    <p>個人資料<p>
+    <br>🔸生日：3月25日
+    <br>🔸年齡：15歲
+    <br>🔸星座：牡羊座
+    <br>🔸性別：女
+    <br>🔸學校：台中市立光德國中
+    <br>🔸興趣：寫程式、聽音樂、看動漫
+    <br>🔸專長：Python、HTML、AI繪圖
+    <br>🔸最愛的動畫：不當哥哥了
+    <br>🔸最喜歡的遊戲：蔚藍檔案
   </div>
 
-  <!-- 主內容 -->
-  <main class="main">
-    <div class="section">
-      <h2>🖋️介紹</h2>
-      <p>🔸Ruixue，一個喜歡寫程式的國中生，也喜歡在網上分享生活趣事。
-我總是對 AI 技術、網站設計、還有各種有趣的專案充滿好奇心，
-喜歡把腦中奇怪又可愛的點子實現出來。
-<br>🔸平常除了寫程式，也會花時間畫小蘿莉角色，
-或者嘗試製作一些好玩的小工具，
-就算是微小的程式功能，只要能讓生活變得更方便，
-我都會覺得特別有成就感。
-<br>🔸現在，我正在打造屬於自己的 Discord 機器人「Mining-ru」，
-希望能和大家一起在社群裡交流、聊天，
-一步步築起專屬於我的 數位小天地 ！</p>
-    </div>
-
-        <div class="section">
-      <h2>🧰專長</h2>
-      <p>🔸Python Discord機器人開發</p>
-      <p>🔸純Html網站開發</p>
-      <p>🔸Adobe Lightroom調色</p>
-      <p>🔸Discord社群經營</p>
-    </div>
-
-    <div class="section">
-      <h2>💼經歷</h2>
-      <p>🔸Scrash台中市賽佳作(2025)
-<br>🔸YouTuber(2023-2024)
-<br>🔸Discord機器人「Mining-ru」開發者(2025)
-<br>🔸Weather.ru開發者(2025)
-<br>🔸Ruixue Gui開發者(2025)
-<br>
-      </p>
-    </div>
-
-    <div class="section">
-      <h2>📖學歷</h2>
-      <p>🔸目前就讀國中</p>
-    </div>
-
-    <div class="section">
-      <h2>🔗連結</h2>
-      <div class="links">
-        <a class="link-btn" href="https://discord.gg/57BMuH6d3X" target="_blank">Discord群組</a>
-        <a class="link-btn" href="https://www.threads.com/@ruixue.9626" target="_blank">Threads</a>
-        <a class="link-btn" href="https://sites.google.com/view/mining-ru/" target="_blank">Mining.ru</a>
-        <a class="link-btn" href="https://weather-ru.onrender.com" target="_blank">Weather.ru</a>
-        <a class="link-btn" href="https://ruixuegui.onrender.com" target="_blank">Ruixue Gui</a>
-      </div>
-    </div>
-  </main>
-
-  <script>
-    function updateTime() {
-      let d = new Date();
-      let h = d.getHours();
-      const m = d.getMinutes().toString().padStart(2,'0');
-      const ampm = h >= 12 ? "PM" : "AM";
-      h = h % 12;
-      if (h === 0) h = 12;
-      document.getElementById("time").textContent = `${h}:${m} ${ampm}`;
-    }
-    updateTime();
-    setInterval(updateTime, 1000);
-  </script>
+  <div class="glass-card-1">
+    <a href="https://www.threads.com/@ruixue.9626" target="_blank" class="glass-btn">Threads</a>
+    <br>
+    <br>
+    <a href="https://discord.gg/57BMuH6d3X" target="_blank" class="glass-btn">Discord</a>
+    <br>
+    <br>
+    <a href="https://github.com/Ruixue9626/" target="_blank" class="glass-btn">Github</a>
+    <br>
+    <br>
+    <a href="https://mining-ru.onrender.com" target="_blank" class="glass-btn">Mining.ru</a>
+    <br>
+    <br>
+    <a href="https://weather-ru.onrender.com" target="_blank" class="glass-btn">Weather.ru</a>
+    <br>
+    <br>
+    <a href="https://Daily-ru.onrender.com" target="_blank" class="glass-btn">Daily.ru(會考倒數)</a>
+    <br>
+    <br>
+  </div>
 </body>
 </html>
