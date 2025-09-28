@@ -2,115 +2,281 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Ruixue</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ruixue's web site</title>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "Segoe UI", sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #a8edea, #fed6e3);
-    }
+      body {
+          margin: 0;
+          padding: 0;
+          font-family: "Segoe UI", sans-serif;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          min-height: 100vh;
+          background: linear-gradient(135deg, #000000);
+          color: #e5e5e5;
+          overflow: hidden;
+      }
 
-    h1 {
-      margin: 40px 0 20px;
-      font-size: 2.5rem;
-      color: #333;
-      text-align: center;
-    }
+      .page-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 100%;
+          transition: opacity 0.5s ease, visibility 0.5s ease;
+      }
 
-    .glass-card {
-      width: 70%;           /* 寬度縮小 */
-      max-width: 400px;     /* 最大寬度也縮小 */
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 20px;
-      padding: 20px;
-      margin: 30px auto;    /* 上下間距加大，左右自動置中 */
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      color: #333;
-      text-align: left; /* 讓文字靠左 */
-    }
+      .page-content.hidden {
+          opacity: 0;
+          visibility: hidden;
+      }
 
-    .glass-btn {
-      display: inline-block;
-      width: 80%;          /* 寬度變大 */
-      max-width: 400px;    /* 最大寬度限制 */
-      padding: 20px 0;     /* 高度保持大 */
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      color: #333;
-      font-weight: bold;
-      font-size: 1.2rem;
-      text-decoration: none;
-      transition: 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      text-align: center; /* 只讓按鈕文字靠左 */
-    }
+      .page-content h1 {
+          margin: 0 0 40px 0;
+          font-size: 4rem;
+          color: #e5e5e5;
+      }
 
-    .glass-card-1 {
-      width: 70%;           /* 寬度縮小 */
-      max-width: 400px;     /* 最大寬度也縮小 */
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 20px;
-      padding: 20px;
-      margin: 30px auto;    /* 上下間距加大，左右自動置中 */
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      color: #333;
-      text-align: center; /* 讓文字靠左 */
-    }
+      .glass-radio-group {
+          --bg: rgba(255, 255, 255, 0.06);
+          --text: #e5e5e5;
 
-    .glass-btn:hover {
-      background: rgba(255, 255, 255, 0.4);
-      transform: translateY(-2px);
-    }
+          display: flex;
+          position: fixed;
+          left: 50%;
+          bottom: 32px;
+          transform: translateX(-50%);
+          background: var(--bg);
+          border-radius: 1rem;
+          backdrop-filter: blur(12px);
+          box-shadow:
+            inset 1px 1px 4px rgba(255, 255, 255, 0.2),
+            inset -1px -1px 6px rgba(0, 0, 0, 0.3),
+            0 4px 12px rgba(0, 0, 0, 0.15);
+          overflow: hidden;
+          width: 90%;
+          max-width: 500px;
+          z-index: 1000;
+      }
+
+      .glass-radio-group input { display: none; }
+
+      .glass-radio-group label {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: clamp(12px, 2.5vw, 16px);
+          padding: 0.8rem 1rem;
+          cursor: pointer;
+          font-weight: 600;
+          letter-spacing: 0.3px;
+          color: var(--text);
+          position: relative;
+          z-index: 2;
+          transition: color 0.3s ease-in-out;
+      }
+
+      .glass-radio-group label:hover { color: white; }
+
+      .glass-radio-group input:checked + label { color: #fff; }
+
+      .glass-glider {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: calc(100% / 3);
+          border-radius: 1rem;
+          z-index: 1;
+          transition:
+            transform 0.5s cubic-bezier(0.37, 1.95, 0.66, 0.56),
+            background 0.4s ease-in-out,
+            box-shadow 0.4s ease-in-out;
+      }
+
+      #glass-silver:checked ~ .glass-glider {
+          transform: translateX(0%);
+          background: linear-gradient(135deg, #c0c0c055, #e0e0e0);
+          box-shadow: 0 0 18px rgba(192,192,192,0.5), 0 0 10px rgba(255,255,255,0.4) inset;
+      }
+      #glass-gold:checked ~ .glass-glider {
+          transform: translateX(100%);
+          background: linear-gradient(135deg, #ffd70055, #ffcc00);
+          box-shadow: 0 0 18px rgba(255,215,0,0.5), 0 0 10px rgba(255,235,150,0.4) inset;
+      }
+      #glass-platinum:checked ~ .glass-glider {
+          transform: translateX(200%);
+          background: linear-gradient(135deg, #d0e7ff55, #a0d8ff);
+          box-shadow: 0 0 18px rgba(160,216,255,0.5), 0 0 10px rgba(200,240,255,0.4) inset;
+      }
+
+      .glass-btn {
+          position: relative;
+          padding: 16px 30px;
+          font-size: 17px;
+          color: #fff;
+          border: none;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 20px;
+          backdrop-filter: blur(15px);
+          cursor: pointer;
+          box-shadow: 0 10px 20px rgba(0,0,0,0.1), inset 0 0 0 1px rgba(255,255,255,0.15);
+          overflow: hidden;
+          transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+          font-family: Arial, sans-serif;
+          letter-spacing: 0.5px;
+          text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      }
+
+      .glass-btn::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+          transition: 0.6s;
+      }
+
+      .glass-btn::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
+          opacity: 0;
+          transition: opacity 0.4s ease;
+      }
+
+      .glass-btn:hover {
+          transform: translateY(-3px) scale(1.02);
+          background: rgba(255,255,255,0.15);
+          box-shadow: 0 15px 30px rgba(0,0,0,0.15), inset 0 0 0 1px rgba(255,255,255,0.2);
+          letter-spacing: 1.5px;
+      }
+
+      .glass-btn:hover::before { left: 100%; }
+      .glass-btn:hover::after { opacity: 1; }
+      .glass-btn:active { transform: translateY(1px) scale(0.98); background: rgba(255,255,255,0.2); }
+
+      .glass-btn span { position: relative; z-index: 1; font-weight: 500; }
+
+      /* 玻璃質感個人資料框 */
+      .profile-card {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 20px;
+          padding: 20px 30px;
+          backdrop-filter: blur(15px);
+          box-shadow: 0 10px 20px rgba(0,0,0,0.1), inset 0 0 0 1px rgba(255,255,255,0.15);
+          max-width: 400px;
+          margin: auto;
+          text-align: left;
+          line-height: 1.8;
+      }
+
   </style>
 </head>
 <body>
-  <h1>Ruixue</h1>
 
-  <div class="glass-card">
-    <p>個人資料<p>
-    <br>🔸生日：3月25日
-    <br>🔸年齡：15歲
-    <br>🔸星座：牡羊座
-    <br>🔸性別：女
-    <br>🔸學校：台中市立光德國中
-    <br>🔸興趣：寫程式、聽音樂、看動漫
-    <br>🔸專長：Python、HTML、AI繪圖
-    <br>🔸最愛的動畫：不當哥哥了
-    <br>🔸最喜歡的遊戲：蔚藍檔案
+  <!-- 頁面內容容器 -->
+  <div id="page-home" class="page-content">
+    <h1>This is Ruixue's web site</h1>
+    <div style="display: flex; justify-content: center; gap: 20px;">
+      <a href="#" class="glass-btn" data-page="about">
+        <span>關於</span>
+      </a>
+      <a href="#" class="glass-btn" data-page="works">
+        <span>作品</span>
+      </a>
+    </div>
   </div>
 
-  <div class="glass-card-1">
-    <a href="https://www.threads.com/@ruixue.9626" target="_blank" class="glass-btn">Threads</a>
-    <br>
-    <br>
-    <a href="https://discord.gg/57BMuH6d3X" target="_blank" class="glass-btn">Discord</a>
-    <br>
-    <br>
-    <a href="https://github.com/Ruixue9626/" target="_blank" class="glass-btn">Github</a>
-    <br>
-    <br>
-    <a href="https://mining-ru.onrender.com" target="_blank" class="glass-btn">Mining.ru</a>
-    <br>
-    <br>
-    <a href="https://weather-ru.onrender.com" target="_blank" class="glass-btn">Weather.ru</a>
-    <br>
-    <br>
-    <a href="https://Daily-ru.onrender.com" target="_blank" class="glass-btn">Daily.ru(會考倒數)</a>
-    <br>
-    <br>
+  <div id="page-about" class="page-content hidden">
+    <h1>關於我</h1>
+    <div class="profile-card">
+      <p><strong>Ruixue</strong></p>
+      <p>🔸生日：3月25日</p>
+      <p>🔸年齡：15歲</p>
+      <p>🔸星座：牡羊座</p>
+      <p>🔸性別：女</p>
+      <p>🔸學校：台中市立光德國中</p>
+      <p>🔸興趣：寫程式、聽音樂、看動漫</p>
+      <p>🔸專長：Python、HTML、AI繪圖</p>
+      <p>🔸最愛的動畫：不當哥哥了</p>
+      <p>🔸最喜歡的遊戲：蔚藍檔案</p>
+      <br>
+    </div>
   </div>
+ 
+
+  <div id="page-works" class="page-content hidden">
+    <h1>我的作品</h1>
+    <div style="display: flex; flex-direction: column; gap: 15px;">
+      <a href="https://mining-ru.onrender.com" class="glass-btn" target="_blank" rel="noopener noreferrer">
+        <span>Mining-ru</span>
+      </a>
+      <a href="https://weather-ru.onrender.com" class="glass-btn" target="_blank" rel="noopener noreferrer">
+        <span>Weather-ru</span>
+      </a>
+      <a href="https://daily-ru.onrender.com" class="glass-btn" target="_blank" rel="noopener noreferrer">
+        <span>Daily-ru會考倒數</span>
+      </a>
+      <a href="https://ruixuegui.onrender.com" class="glass-btn" target="_blank" rel="noopener noreferrer">
+        <span>Ruixue Gui</span>
+      </a>
+      <a href="https://ans-ru.onrender.com" class="glass-btn" target="_blank" rel="noopener noreferrer">
+        <span>Ans-ru</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 固定的導覽列 -->
+  <div class="glass-radio-group">
+    <input type="radio" name="plan" id="glass-silver" data-page="home" checked />
+    <label for="glass-silver">首頁</label>
+
+    <input type="radio" name="plan" id="glass-gold" data-page="about" />
+    <label for="glass-gold">關於</label>
+
+    <input type="radio" name="plan" id="glass-platinum" data-page="works" />
+    <label for="glass-platinum">作品</label>
+
+    <div class="glass-glider"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const pages = document.querySelectorAll('.page-content');
+      const navRadios = document.querySelectorAll('.glass-radio-group input[type="radio"]');
+      const pageButtons = document.querySelectorAll('.glass-btn[data-page]');
+
+      const pageToRadioMap = {
+        'home': 'glass-silver',
+        'about': 'glass-gold',
+        'works': 'glass-platinum'
+      };
+
+      function showPage(pageId) {
+        pages.forEach(page => page.classList.add('hidden'));
+        const targetPage = document.getElementById(`page-${pageId}`);
+        if (targetPage) targetPage.classList.remove('hidden');
+        const targetRadio = document.getElementById(pageToRadioMap[pageId]);
+        if (targetRadio) targetRadio.checked = true;
+      }
+
+      navRadios.forEach(radio => radio.addEventListener('change', () => showPage(radio.dataset.page)));
+      pageButtons.forEach(button => button.addEventListener('click', (e) => {
+        e.preventDefault();
+        showPage(button.dataset.page);
+      }));
+    });
+  </script>
 </body>
 </html>
