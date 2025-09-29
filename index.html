@@ -93,7 +93,7 @@
           position: absolute;
           top: 0;
           bottom: 0;
-          width: calc(100% / 3);
+          width: calc(100% / 4); /* 改成4等分 */
           border-radius: 1rem;
           z-index: 1;
           transition:
@@ -116,6 +116,11 @@
           transform: translateX(200%);
           background: linear-gradient(135deg, #d0e7ff55, #a0d8ff);
           box-shadow: 0 0 18px rgba(160,216,255,0.5), 0 0 10px rgba(200,240,255,0.4) inset;
+      }
+      #glass-friend:checked ~ .glass-glider {
+          transform: translateX(300%);
+          background: linear-gradient(135deg, #ff99cc55, #ff66aa);
+          box-shadow: 0 0 18px rgba(255,153,204,0.5), 0 0 10px rgba(255,200,220,0.4) inset;
       }
 
       .glass-btn {
@@ -169,7 +174,6 @@
 
       .glass-btn span { position: relative; z-index: 1; font-weight: 500; }
 
-      /* 玻璃質感個人資料框 */
       .profile-card {
           background: rgba(255, 255, 255, 0.1);
           border-radius: 20px;
@@ -196,6 +200,9 @@
       <a href="#" class="glass-btn" data-page="works">
         <span>作品</span>
       </a>
+      <a href="#" class="glass-btn" data-page="friend">
+        <span>朋友</span>
+      </a>
     </div>
   </div>
 
@@ -216,7 +223,6 @@
     </div>
   </div>
  
-
   <div id="page-works" class="page-content hidden">
     <h1>我的作品</h1>
     <div style="display: flex; flex-direction: column; gap: 15px;">
@@ -237,6 +243,15 @@
       </a>
     </div>
   </div>
+  
+  <div id="page-friend" class="page-content hidden">
+    <h1>朋友</h1>
+    <div style="display: flex; flex-direction: column; gap: 15px;">
+      <a href="https://blog.rezedge.com" class="glass-btn" target="_blank" rel="noopener noreferrer">
+        <span>Ranzeplay</span>
+      </a>
+    </div>
+  </div>
 
   <!-- 固定的導覽列 -->
   <div class="glass-radio-group">
@@ -248,6 +263,9 @@
 
     <input type="radio" name="plan" id="glass-platinum" data-page="works" />
     <label for="glass-platinum">作品</label>
+
+    <input type="radio" name="plan" id="glass-friend" data-page="friend" />
+    <label for="glass-friend">朋友</label>
 
     <div class="glass-glider"></div>
   </div>
@@ -261,7 +279,8 @@
       const pageToRadioMap = {
         'home': 'glass-silver',
         'about': 'glass-gold',
-        'works': 'glass-platinum'
+        'works': 'glass-platinum',
+        'friend': 'glass-friend'
       };
 
       function showPage(pageId) {
