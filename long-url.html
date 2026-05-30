@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>longURL.ru</title>
+
+    <link rel="icon" href="https://raw.githubusercontent.com/Ruixue9626/LongUrl-ru/refs/heads/main/%E4%BD%A0%E7%9A%84%E6%AE%B5%E8%90%BD%E6%96%87%E5%AD%97.png" type="image/png">
+
+    <style>
+
+        /* 樣式保持原樣 */
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body, html { 
+
+            width: 100%; height: 100%; 
+
+            font-family: 'Segoe UI', sans-serif;
+
+            background: #fdf2f4; display: flex; flex-direction: column; align-items: center; overflow-x: hidden;
+
+        }
+
+        .banner {
+
+            width: 100%; background: #ffb6c1; color: white; padding: 15px 0;
+
+            text-align: center; font-size: 1.8rem; font-weight: bold; letter-spacing: 4px;
+
+            font-family: 'Courier New', monospace; flex-shrink: 0;
+
+        }
+
+        .content { 
+
+            flex: 1; display: flex; flex-direction: column; 
+
+            justify-content: flex-start; 
+
+            align-items: center; width: 90%; max-width: 450px; 
+
+            padding-top: 50px; 
+
+        }
+
+        h2 { color: #ff8fa3; margin-bottom: 35px; font-size: 2.2rem; opacity: 0.9; }
+
+        .input-group { width: 100%; margin-bottom: 18px; }
+
+        label { display: block; margin-bottom: 6px; color: #b0a0a0; font-size: 0.8rem; }
+
+        input {
+
+            width: 100%; padding: 14px; border: 2px solid #ffb6c1; border-radius: 10px;
+
+            outline: none; font-size: 16px; background: rgba(255, 255, 255, 0.7);
+
+        }
+
+        button {
+
+            width: 100%; padding: 14px; background: #ffb6c1; color: white;
+
+            border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer;
+
+            transition: 0.3s;
+
+        }
+
+        button:hover { background: #ff9fb1; }
+
+        #result-area { margin-top: 25px; width: 100%; padding: 15px; background: white; border-radius: 12px; display: none; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+        .url-display { word-break: break-all; color: #ff758c; font-family: monospace; font-size: 0.8rem; margin-bottom: 10px; }
+
+        .feature-intro { margin-top: 50px; padding: 20px; background: rgba(255, 255, 255, 0.4); border-radius: 15px; border: 1px dashed #ffb6c1; color: #888; font-size: 0.9rem; line-height: 1.6; width: 100%; }
+
+        .feature-intro h3 { color: #ff8fa3; font-size: 1rem; margin-bottom: 10px; text-align: center; }
+
+        .feature-intro ul { list-style: none; padding-left: 0; }
+
+        .feature-intro li { margin-bottom: 8px; position: relative; padding-left: 18px; }
+
+        .feature-intro li::before { content: "✨"; position: absolute; left: 0; font-size: 0.8rem; }
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+<div class="banner">longURL.ru</div>
+
+
+
+<div class="content" id="app-content">
+
+    <h2>加長你的網址</h2>
+
+    
+
+    <div class="input-group">
+
+        <label>顯示文字(選填)</label>
+
+        <input type="text" id="customText" placeholder="輸入想要放在網址內的文字">
+
+    </div>
+
+    <div class="input-group">
+
+        <label>導向網址</label>
+
+        <input type="text" id="targetUrl" placeholder="輸入要開啟的網址">
+
+    </div>
+
+    <button onclick="generate()">把它加長！</button>
+
+
+
+    <div id="result-area">
+
+        <div class="url-display" id="finalUrl"></div>
+
+        <button onclick="copyUrl()" style="background: #a2d2ff; padding: 10px;">複製網址</button>
+
+    </div>
+
+
+
+    <div class="feature-intro">
+
+        <h3>功能介紹</h3>
+
+        <ul>
+
+        <li><b>把網址變得超超超長：</b> 你看膩了短網址嗎？LongURL.ru幫你把網址加長</li>
+
+        <li><b>自定義路徑文字：</b> 可以在長網址中埋入你想說的話，讓連結看起來更有趣。</li>
+
+        <li><b>無使用期限：</b> 你可以以一直用，絕對不會過期</li>
+
+        </ul>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+    function checkAndRedirect() {
+
+        const hash = window.location.hash;
+
+        if (hash.length > 5) {
+
+            const parts = hash.substring(1).split('/').filter(p => p.length > 0);
+
+            if (parts.length >= 3) {
+
+                const encrypted = parts[parts.length - 1];
+
+                let decrypted = "";
+
+                for (let i = 0; i < encrypted.length; i += 3) {
+
+                    decrypted += encrypted[i];
+
+                }
+
+
+
+                // 這裡會把暫時替換的 $ 換回 / 喔！
+
+                decrypted = decrypted.replace(/\$/g, '/');
+
+
+
+                if (decrypted.includes('.') || decrypted.includes('/')) {
+
+                    document.getElementById('app-content').innerHTML = `
+
+                        <div style="text-align:center; color:#ff8fa3; margin-top:10vh;">
+
+                            <p style="font-size:1.5rem;">傳送中ing...</p>
+
+                            <p>正在前往：${decrypted}</p>
+
+                            <p style="font-size:0.8rem; margin-top:10px;"></p>
+
+                        </div>
+
+                    `;
+
+                    setTimeout(() => {
+
+                        window.location.href = "https://" + decrypted;
+
+                    }, 1200);
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+
+    window.onload = checkAndRedirect;
+
+
+
+    function generate() {
+
+        const customText = document.getElementById('customText').value.trim() || 'item';
+
+        let targetUrl = document.getElementById('targetUrl').value.trim();
+
+        if (!targetUrl) return alert("網址不能空著！");
+
+        
+
+        // 嘿嘿... 產生的時候先把 / 換成 $ 避開網址路徑問題！
+
+        targetUrl = targetUrl.replace(/^https?:\/\//, '').replace(/\//g, '$');
+
+        
+
+        const chars = "abcdefghijklmnopqrstuvwxyz";
+
+        let scrambled = "";
+
+        for (let char of targetUrl) {
+
+            scrambled += char + chars.charAt(Math.floor(Math.random()*26)) + chars.charAt(Math.floor(Math.random()*26));
+
+        }
+
+        
+
+        const noise = "abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789";
+
+        const baseUrl = window.location.origin + window.location.pathname;
+
+        const finalUrl = `${baseUrl}#/${customText}/${noise}/${scrambled}/`;
+
+
+
+        document.getElementById('finalUrl').innerText = finalUrl;
+
+        document.getElementById('result-area').style.display = 'block';
+
+    }
+
+
+
+    function copyUrl() {
+
+        navigator.clipboard.writeText(document.getElementById('finalUrl').innerText).then(() => {
+
+            alert("複製成功！");
+
+        });
+
+    }
+
+</script>
+
+</body>
+
+</html>
