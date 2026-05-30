@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Weather.ru</title>
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/Ruixue9626/Weather.ru/refs/heads/main/%E7%84%A1%E6%A8%99%E9%A1%8C341_20260128183215.png">
+  <style>
+    html, body { 
+      margin: 0; padding: 0; min-height: 100%;
+      font-family: "Microsoft JhengHei", "Segoe UI", sans-serif; 
+      background-color: #0b0e11; color: #eaecef;
+    }
+    .banner {
+      position: fixed; top: 0; left: 0; right: 0; height: 50px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 15px; background: #181a20; border-bottom: 1px solid #2b3139; z-index: 100;
+    }
+    .brand { color: #f0b90b; font-weight: bold; font-size: 18px; }
+    #clock { color: #848e9c; font-size: 13px; }
+    .main-content { margin-top: 60px; padding: 10px; display: flex; flex-direction: column; align-items: center; text-align: center; padding-bottom: 120px; }
+    .temp-display { font-size: 56px; font-weight: bold; margin: 5px 0; }
+    #city-name { color: #848e9c; font-size: 14px; }
+    .chart-outer { width: 100%; max-width: 1200px; overflow-x: auto; background: #181a20; border-radius: 12px; margin: 10px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+    canvas { display: block; cursor: crosshair; }
+
+    .panel-box {
+      background: #1e2329; border-left: 5px solid #f0b90b; border-radius: 8px;
+      width: 100%; max-width: 800px; margin: 20px auto; text-align: left;
+    }
+    .panel-header { padding: 12px 20px; border-bottom: 1px solid #2b3139; font-size: 18px; font-weight: bold; color: #f0b90b; }
+    .list-item { display: flex; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #2b3139; font-size: 16px; }
+    .list-value { font-weight: bold; }
+
+    .market-list { width: 100%; max-width: 800px; margin-top: 20px; background: #181a20; border-radius: 12px; }
+    .market-row { display: flex; align-items: center; padding: 15px 20px; border-bottom: 1px solid #2b3139; cursor: pointer; }
+    .m-city { flex: 1.5; text-align: left; font-size: 16px; font-weight: bold; }
+    .m-change { flex: 1.2; text-align: center; font-size: 14px; } 
+    .m-temp { flex: 1; text-align: center; font-size: 18px; font-weight: bold; }
+    .m-cond { flex: 1.5; text-align: right; font-size: 14px; color: #848e9c; }
+
+    .footer { position: fixed; bottom: 15px; width: 100%; text-align: center; z-index: 99; }
+    .btn-action { padding: 10px 25px; background-color: #2b2f36; border: 1px solid #474d57; border-radius: 30px; color: #eaecef; cursor: pointer; }
+
+    .hot { color: #f6465d !important; } 
+    .cold { color: #0ecb81 !important; }
+
+    @media (max-width: 600px) {
+      .market-row { padding: 12px 10px; }
+      .m-city, .m-temp { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <div class="brand">Weather.ru | 天氣K線</div>
+    <div id="clock">--:--:--</div>
+  </div>
+
+  <main class="main-content">
+    <div id="city-name">讀取中...</div>
+    <div id="big-temp" class="temp-display">--.-°C</div>
+    <div class="chart-outer"><canvas id="weatherCanvas" width="1200" height="380"></canvas></div>
+
+    <div class="panel-box" id="detailPanel">
+      <div class="panel-header">時段詳情：<span id="val-time">--:--</span></div>
+      <div class="list-item"><span>氣象預測</span><span id="val-cond" class="list-value">--</span></div>
+      <div class="list-item"><span>現在氣溫</span><span id="val-current" class="list-value" style="color:#f0b90b;">--</span></div>
+      <div class="list-item"><span>起始溫度</span><span id="val-start" class="list-value">--</span></div>
+      <div class="list-item"><span>結束溫度</span><span id="val-end" class="list-value">--</span></div>
+      <div class="list-item"><span>最高預期</span><span id="val-max" class="list-value hot">--</span></div>
+      <div class="list-item"><span>最低預期</span><span id="val-min" class="list-value cold">--</span></div>
+    </div>
+
+    <h3 style="color:#f0b90b; margin-top:30px;">各地即時行情</h3>
+    <div class="market-list" id="taiwanMarket"></div>
+  </main>
+
+  <div class="footer">
+    <button class="btn-action" id="oldFeaturesBtn">詳細天氣 ｜ 設定地區</button>
+  </div>
+
+  <script>
+    let CITY = localStorage.getItem('weather_city') || 'Taichung,Taiwan';
+    const API_KEY = '177eb0e0b74c4d6387812011250908';
+    const TAIWAN_CITIES = [
+      {e: "Taipei,Taiwan", s: "台北"}, {e: "New Taipei,Taiwan", s: "新北"},
+      {e: "Taoyuan,Taiwan", s: "桃園"}, {e: "Taichung,Taiwan", s: "台中"},
+      {e: "Tainan,Taiwan", s: "台南"}, {e: "Kaohsiung,Taiwan", s: "高雄"},
+      {e: "Keelung,Taiwan", s: "基隆"}, {e: "Hsinchu,Taiwan", s: "新竹"},
+      {e: "Miaoli,Taiwan", s: "苗栗"}, {e: "Changhua,Taiwan", s: "彰化"},
+      {e: "Nantou,Taiwan", s: "南投"}, {e: "Yunlin,Taiwan", s: "雲林"},
+      {e: "Chiayi,Taiwan", s: "嘉義"}, {e: "Pingtung,Taiwan", s: "屏東"},
+      {e: "Yilan,Taiwan", s: "宜蘭"}, {e: "Hualien,Taiwan", s: "花蓮"},
+      {e: "Taitung,Taiwan", s: "台東"}, {e: "Penghu,Taiwan", s: "澎湖"}
+    ];
+    let weatherData = [];
+    let currentGlobalTemp = 0;
+
+    async function init() { await updateWeather(); updateTaiwanMarket(); }
+
+    async function updateWeather() {
+      try {
+        const res = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${encodeURIComponent(CITY)}&days=2&lang=zh_tw`);
+        const data = await res.json();
+        document.getElementById('city-name').textContent = data.location.name.toUpperCase();
+        currentGlobalTemp = data.current.temp_c;
+        document.getElementById('big-temp').textContent = currentGlobalTemp.toFixed(1) + "°C";
+        document.getElementById('big-temp').className = 'temp-display ' + (currentGlobalTemp >= 25 ? 'hot' : 'cold');
+        
+        const hours = data.forecast.forecastday[0].hour;
+        weatherData = hours.map((h, i) => {
+          const s = h.temp_c, e = hours[i+1] ? hours[i+1].temp_c : s;
+          return { time: h.time.split(' ')[1], hNum: parseInt(h.time.split(' ')[1]), start: s, end: e, max: Math.max(s, e) + 0.4, min: Math.min(s, e) - 0.4, isUp: e >= s, cond: h.condition.text };
+        });
+        renderChart();
+        showDetail(weatherData.find(d => d.hNum === new Date().getHours()) || weatherData[0]);
+      } catch (e) { console.error(e); }
+    }
+
+    function renderChart() {
+      const canvas = document.getElementById('weatherCanvas'), ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const pad = 50, barW = 32, gap = 15, allV = weatherData.flatMap(d => [d.max, d.min]);
+      const maxV = Math.max(...allV) + 1, minV = Math.min(...allV) - 1;
+      const getY = (v) => canvas.height - pad - ((v - minV) / (maxV - minV) * (canvas.height - 2 * pad));
+      weatherData.forEach((d, i) => {
+        const x = pad + i * (barW + gap), color = d.isUp ? '#f6465d' : '#0ecb81';
+        d.hitX = x; d.hitW = barW;
+        ctx.strokeStyle = color; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(x + barW/2, getY(d.max)); ctx.lineTo(x + barW/2, getY(d.min)); ctx.stroke();
+        ctx.fillStyle = color; ctx.fillRect(x, getY(Math.max(d.start, d.end)), barW, Math.max(Math.abs(getY(d.start)-getY(d.end)), 3));
+        if (i % 3 === 0) { ctx.fillStyle = "#848e9c"; ctx.fillText(d.time, x, canvas.height - 15); }
+      });
+    }
+
+    async function updateTaiwanMarket() {
+      const list = document.getElementById('taiwanMarket');
+      list.innerHTML = '<div style="padding:20px; color:#848e9c;">行情加載中...</div>';
+      let html = "";
+      for (let c of TAIWAN_CITIES) {
+        try {
+          const res = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${c.e}&days=1&lang=zh_tw`);
+          const d = await res.json(), curT = d.current.temp_c, curH = new Date().getHours();
+          const prevT = d.forecast.forecastday[0].hour[curH > 0 ? curH - 1 : 0].temp_c;
+          const diff = curT - prevT;
+          let diffHtml = diff > 0 ? `<span class="hot">▲ ${diff.toFixed(1)}°</span>` : (diff < 0 ? `<span class="cold">▼ ${Math.abs(diff).toFixed(1)}°</span>` : `<span style="color:#848e9c">--</span>`);
+          html += `<div class="market-row" onclick="changeCity('${c.e}')"><div class="m-city">${c.s}</div><div class="m-change">${diffHtml}</div><div class="m-temp ${curT>=25?'hot':'cold'}">${curT.toFixed(0)}°</div><div class="m-cond">${d.current.condition.text}</div></div>`;
+        } catch(e) {}
+      }
+      list.innerHTML = html;
+    }
+
+    function showDetail(d) {
+      document.getElementById('val-time').textContent = d.time;
+      document.getElementById('val-cond').textContent = d.cond;
+      document.getElementById('val-current').textContent = currentGlobalTemp.toFixed(1) + "°C";
+      const s = document.getElementById('val-start'), e = document.getElementById('val-end');
+      s.textContent = d.start.toFixed(1) + "°C"; e.textContent = d.end.toFixed(1) + "°C";
+      s.className = e.className = 'list-value ' + (d.isUp ? 'hot' : 'cold');
+      document.getElementById('val-max').textContent = d.max.toFixed(1) + "°C";
+      document.getElementById('val-min').textContent = d.min.toFixed(1) + "°C";
+      document.getElementById('detailPanel').style.borderLeftColor = d.isUp ? '#f6465d' : '#0ecb81';
+    }
+
+    function changeCity(c) { CITY = c; localStorage.setItem('weather_city', c); window.scrollTo({top: 0, behavior: 'smooth'}); updateWeather(); }
+    document.getElementById('weatherCanvas').onclick = function(e) {
+      const rect = this.getBoundingClientRect(), mouseX = (e.clientX - rect.left) * (this.width / rect.width);
+      let d = weatherData.find(v => mouseX >= v.hitX && mouseX <= v.hitX + v.hitW);
+      if (d) showDetail(d);
+    };
+    document.getElementById('oldFeaturesBtn').onclick = function() { const c = prompt('城市名稱：', CITY); if(c) changeCity(c); };
+    setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString(); }, 1000);
+    init();
+  </script>
+</body>
+</html>
