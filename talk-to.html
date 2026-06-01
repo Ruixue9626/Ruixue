@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Talk to.</title>
-    <link rel="icon" href="https://github.com/Ruixue9626/Ruixue/blob/main/image/Talk%20to.png?raw=true" type="image/png">
+    <link rel="icon" href="https://ruixue.cc.cd/image/Talk to.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
@@ -375,4 +375,138 @@
         function deleteDiary(id, event) {
             event.stopPropagation(); // 防止觸發點擊卡片進入編輯
             if (!confirm('確定要刪除這篇記錄嗎？')) return;
-            diaries = diari
+            diaries = diaries.filter(d => d.id !== id);
+            localStorage.setItem('talkto_v3_data', JSON.stringify(diaries));
+            renderRecords();
+        }
+
+        // 渲染記錄
+        function renderRecords() {
+            const container = document.getElementById('records-list');
+            const sort = document.getElementById('sort-select').value;
+            container.innerHTML = '';
+            let list = [...diaries];
+            if(sort === 'old') list.reverse();
+
+            if(sort === 'mood') {
+                const grouped = list.reduce((acc, d) => { (acc[d.mood] = acc[d.mood] || []).push(d); return acc; }, {});
+                for(let m in grouped) {
+                    const groupTitle = document.createElement('div');
+                    groupTitle.className = "text-xs font-bold text-pink-300 mt-6 mb-2 ml-2";
+                    groupTitle.innerText = `${m} 的回憶`;
+                    container.appendChild(groupTitle);
+                    grouped[m].forEach(d => container.appendChild(createCard(d)));
+                }
+            } else {
+                list.forEach(d => container.appendChild(createCard(d)));
+            }
+        }
+
+        function createCard(d) {
+            const el = document.createElement('div');
+            el.className = "figma-card p-5 flex justify-between items-center cursor-pointer";
+            el.onclick = () => {
+                currentDiary = d;
+                const diaryPage = document.getElementById('page-diary');
+                document.getElementById('page-records').classList.add('hidden');
+                diaryPage.classList.remove('hidden');
+                
+                // 觸發回顧頁面動畫
+                diaryPage.classList.remove('page-animation');
+                void diaryPage.offsetWidth;
+                diaryPage.classList.add('page-animation');
+
+                document.getElementById('diary-title').value = d.title;
+                document.getElementById('diary-content').value = d.content;
+                document.getElementById('selected-emoji').innerText = d.mood;
+                
+                // 唯讀模式處理
+                document.getElementById('diary-title').readOnly = true;
+                document.getElementById('diary-content').readOnly = true;
+                document.getElementById('diary-actions').classList.add('hidden');
+                
+                // 顯示儲存的 AI 回覆
+                if(d.aiResponse) {
+                    document.getElementById('ai-response').classList.remove('hidden');
+                    document.getElementById('ai-text').innerText = d.aiResponse;
+                    document.getElementById('post-ai-actions').classList.add('hidden');
+                } else {
+                    document.getElementById('ai-response').classList.add('hidden');
+                }
+
+                document.getElementById('header-share').classList.remove('btn-hidden');
+                document.getElementById('header-back').classList.remove('btn-hidden');
+                document.getElementById('nav-btn').classList.add('btn-hidden');
+                document.getElementById('current-location').innerText = '回顧';
+            };
+            el.innerHTML = `
+                <div><h4 class="font-bold text-gray-800">${d.title}</h4><p class="text-[10px] text-gray-400 mt-1">${d.time}</p></div>
+                <div class="flex items-center gap-4">
+                    <span class="text-2xl">${d.mood}</span>
+                    <button onclick="deleteDiary(${d.id}, event)" class="p-2 text-gray-300 hover:text-rose-400 transition-colors flex items-center justify-center">
+                        <span class="material-symbols-rounded !text-[20px]">delete</span>
+                    </button>
+                </div>`;
+            return el;
+        }
+
+        // 分享 QR Code (修正後的邏輯)
+        function openShare() {
+            if(!currentDiary) return;
+            const qbox = document.getElementById('qrcode-box');
+            qbox.innerHTML = '';
+            
+            // 縮短內容長度並簡化格式以確保 QR Code 能生成
+            const shortContent = currentDiary.content.length > 100 ? currentDiary.content.substring(0, 100) + '...' : currentDiary.content;
+            const shareLink = `https://talk-to.onrender.com/#/s?t=${encodeURIComponent(currentDiary.title)}&c=${encodeURIComponent(shortContent)}&d=${currentDiary.time}&m=${encodeURIComponent(currentDiary.mood)}`;
+            
+            try {
+                new QRCode(qbox, {
+                    text: shareLink,
+                    width: 200,
+                    height: 200,
+                    colorDark: "#D63384",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.M
+                });
+                togglePopup('share-popup');
+            } catch (err) {
+                alert("內容太長了，沒辦法生成 QR Code... 嗚...");
+            }
+        }
+
+        // 解析分享連結的參數
+        function parseShareLink() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#/s?')) {
+                const params = new URLSearchParams(hash.substring(hash.indexOf('?')));
+                return {
+                    title: decodeURIComponent(params.get('t') || '無標題日記'),
+                    content: decodeURIComponent(params.get('c') || '無內容'),
+                    time: decodeURIComponent(params.get('d') || ''),
+                    mood: decodeURIComponent(params.get('m') || '😊')
+                };
+            }
+            return null; // 沒有找到分享連結
+        }
+
+        // 顯示分享的日記內容
+        function displaySharedDiary(data) {
+            // 隱藏所有主要內容頁面
+            document.getElementById('page-diary').classList.add('hidden');
+            document.getElementById('page-records').classList.add('hidden');
+
+            // 顯示分享頁面
+            document.getElementById('page-share').classList.remove('hidden');
+
+            // 填充內容
+            document.getElementById('share-title').innerText = data.title;
+            document.getElementById('share-content').innerText = data.content;
+            document.getElementById('share-time').innerText = data.time;
+            document.getElementById('share-mood').innerText = data.mood;
+
+            document.getElementById('current-location').innerText = '分享';
+        }
+    </script>
+</body>
+</html>
