@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>畢業倒數</title>
+  <link rel="icon" href="https://raw.githubusercontent.com/Ruixue9626/Daily-ru/bda8ea8e35c3a68a0b94b0b33c6962206dbc7228/%E7%84%A1%E6%A8%99%E9%A1%8C248_20250906113331.png" type="image/png">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      font-family: "Segoe UI", Roboto, system-ui, -apple-system;
+      height: 100vh;
+      background: linear-gradient(
+        135deg,
+        #ffe8f3,
+        #d9f3ff
+      );
+      color: #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+      --s: 70px;
+      --c1: #ff9a9e;
+      --c2: #fad0c4;
+      --c3: #2c3e50;
+
+      background-color: var(--c3);
+      background-image: linear-gradient(315deg, var(--c1) 25%, transparent 25%),
+        linear-gradient(45deg, var(--c1) 25%, transparent 25%),
+        linear-gradient(315deg, var(--c2) 25%, transparent 25%),
+        linear-gradient(45deg, var(--c2) 25%, transparent 25%);
+      background-size: calc(2 * var(--s)) var(--s);
+      background-position:
+        0 0,
+        0 0,
+        var(--s) calc(var(--s) / 2),
+        var(--s) calc(var(--s) / 2);
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 20px;
+      font-weight: 700;
+      font-size: 20px;
+      color: #000;
+    }
+    .main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .today {
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: #000;
+      font-weight: 500;
+    }
+    .title {
+      font-size: 26px;
+      margin-bottom: 15px;
+      color: #000;
+      font-weight: bold;
+    }
+    .countdown {
+      font-size: 80px;
+      font-weight: bold;
+      margin-bottom: 40px;
+      color: #000;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    #menu-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.05);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      backdrop-filter: blur(0px);
+      transition: all 0.5s ease;
+    }
+    .controls {
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(40px) saturate(180%);
+      -webkit-backdrop-filter: blur(40px) saturate(180%);
+      padding: 25px;
+      border-radius: 24px;
+      width: 280px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      border: 1px solid rgba(255,255,255,0.5);
+      transform: translate(calc(50vw - 45px), calc(50vh - 45px)) scale(0.1);
+      opacity: 0;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      color: #000;
+    }
+
+    /* 自訂下拉選單樣式 */
+    .custom-select-container {
+      position: relative;
+      display: inline-block;
+      min-width: 120px;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+    .select-trigger {
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(0,0,0,0.1);
+      padding: 6px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      transition: all 0.3s;
+      color: #000; /* 確保觸發框文字顏色 */
+    }
+    .select-trigger:hover { background: rgba(255, 255, 255, 0.8); }
+    .select-trigger small { transition: transform 0.3s ease; }
+    .select-trigger span { flex-grow: 1; text-align: left; }
+
+    .select-options {
+      position: absolute;
+      top: calc(100% + 6px); left: 0; right: 0;
+      background: rgba(255, 255, 255, 0.6); /* 降低透明度增強磨砂感 */
+      backdrop-filter: blur(25px) saturate(180%);
+      -webkit-backdrop-filter: blur(25px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 14px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px) scale(0.95);
+      transform-origin: top center;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 10;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    }
+    .select-options div { padding: 10px 12px; cursor: pointer; transition: 0.2s; font-size: 14px; color: #000; }
+    .select-options div:hover { background: rgba(173, 213, 255, 0.3); }
+    
+    /* 開啟時的動畫狀態 */
+    .custom-select-container.active .select-options {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+    .custom-select-container.active .select-trigger { border-color: #add5ff; }
+    .custom-select-container.active .select-trigger small { transform: rotate(180deg); }
+
+    .controls button.dev-btn {
+      display: block;
+      width: 100%;
+      margin-top: 12px;
+      padding: 8px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.4);
+      color: #000;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(5px);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #menu-btn {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(30px) saturate(180%);
+      -webkit-backdrop-filter: blur(30px) saturate(180%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      z-index: 100;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(255,255,255,0.5);
+      color: #000;
+    }
+    
+    /* 彩帶按鈕樣式 */
+    #celebrate-btn {
+      position: fixed;
+      right: 80px; /* 位於漢堡選單 (right: 20px) 的左側 */
+      bottom: 20px;
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(30px) saturate(180%);
+      -webkit-backdrop-filter: blur(30px) saturate(180%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      z-index: 100;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      color: #000;
+    }
+    #celebrate-btn:hover { transform: scale(1.1); background: rgba(255, 255, 255, 0.9); }
+    #celebrate-btn:active { transform: scale(0.9); }
+
+
+    .developer-modal {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(50px) saturate(180%);
+      -webkit-backdrop-filter: blur(50px) saturate(180%);
+      color: #000;
+      padding: 20px;
+      border-radius: 16px;
+      width: 320px;
+      max-width: 90%;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 300;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+    .developer-modal img {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      margin-right: 10px;
+    }
+    .developer-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    .developer-header .text {
+      text-align: left;
+    }
+    .developer-header .text h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+    .developer-links button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(5px);
+      color: #000;
+      font-weight: bold;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .developer-links button:hover {
+      background: #f0f0f0;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .developer-links button:active {
+      transform: translateY(0) scale(0.96);
+    }
+    .developer-footer {
+      margin-top: 12px;
+      font-size: 14px;
+    }
+    .developer-close {
+      position: absolute;
+      top: 12px; right: 12px;
+      width: 28px;
+      height: 28px;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: #000;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .developer-close:hover { background: rgba(255, 255, 255, 0.6); transform: scale(1.1); }
+    .developer-close:active { transform: scale(0.9); }
+
+    /* Apple 風格搜尋按鈕與視窗 */
+    #search-btn {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(30px) saturate(180%);
+      -webkit-backdrop-filter: blur(30px) saturate(180%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      z-index: 100;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(255,255,255,0.5);
+      color: #000;
+    }
+    #search-btn:hover {
+      transform: scale(1.1);
+      background: rgba(255, 255, 255, 0.9);
+    }
+    #search-btn:active {
+      transform: scale(0.9);
+    }
+
+    /* 天氣按鈕 */
+    #weather-btn {
+      position: fixed;
+      left: 80px;
+      bottom: 20px;
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(30px) saturate(180%);
+      -webkit-backdrop-filter: blur(30px) saturate(180%);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      z-index: 100;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(255,255,255,0.5);
+      color: #000;
+      overflow: hidden;
+      font-size: 10px;
+      font-weight: bold;
+    }
+    #weather-btn:hover { transform: scale(1.1); background: rgba(255, 255, 255, 0.9); }
+    #weather-btn:active { transform: scale(0.9); }
+    #weather-btn img { width: 30px; height: 30px; margin-top: -2px; }
+    #weather-btn .temp { margin-top: -4px; }
+
+    #search-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      transition: backdrop-filter 0.5s ease;
+    }
+    .search-modal {
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(40px) saturate(180%);
+      -webkit-backdrop-filter: blur(40px) saturate(180%);
+      padding: 25px;
+      border-radius: 24px;
+      width: 380px;
+      max-width: 85%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      border: 1px solid rgba(255,255,255,0.5);
+      transform: translate(calc(-50vw + 45px), calc(50vh - 45px)) scale(0.15);
+      opacity: 0;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      gap: 10px;
+    }
+
+    /* 天氣視窗 */
+    #weather-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.05);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      backdrop-filter: blur(0px);
+      transition: all 0.5s ease;
+    }
+    .weather-modal {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(30px) saturate(180%);
+      -webkit-backdrop-filter: blur(30px) saturate(180%);
+      padding: 15px;
+      border-radius: 24px;
+      width: 500px;
+      height: 600px;
+      max-width: 90%;
+      max-height: 80%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      border: 1px solid rgba(255,255,255,0.4);
+      transform: translate(calc(-50vw + 105px), calc(50vh - 45px)) scale(0.1);
+      opacity: 0;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .weather-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 0 5px;
+    }
+    .weather-header span { font-weight: 600; font-size: 14px; }
+    .open-external {
+      text-decoration: none;
+      color: #c1dfff;
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .weather-modal iframe {
+      width: 100%;
+      flex: 1;
+      border: none;
+      border-radius: 14px;
+      background: white;
+    }
+
+    /* 自訂主題視窗樣式 */
+    #custom-theme-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 250;
+      transition: all 0.5s ease;
+    }
+    .custom-theme-modal {
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(40px) saturate(180%);
+      -webkit-backdrop-filter: blur(40px) saturate(180%);
+      padding: 25px;
+      border-radius: 24px;
+      width: 350px;
+      max-width: 85%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      border: 1px solid rgba(255,255,255,0.5);
+      transform: scale(0.8);
+      opacity: 0;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      text-align: center;
+    }
+    .custom-theme-modal h3 { margin-top: 0; margin-bottom: 15px; font-size: 18px; }
+    .custom-theme-modal input {
+      width: 100%; padding: 10px; margin-bottom: 15px;
+      border-radius: 10px; border: 1px solid rgba(0,0,0,0.1);
+      box-sizing: border-box; outline: none; background: rgba(255,255,255,0.5);
+    }
+    .custom-theme-modal .btns { display: flex; gap: 10px; }
+    .custom-theme-modal .btns button { flex: 1; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
+  </style>
+</head>
+<body>
+  <div class="container"></div>
+
+  <div class="topbar">
+    <div>畢業倒數</div>
+    <div id="today-date"></div>
+  </div>
+
+  <div class="main">
+    <div class="today" id="today-text"></div>
+    <div class="title">畢業倒數</div>
+    <div class="countdown" id="countdown"></div>
+  </div>
+
+  <div id="search-btn"><span class="material-symbols-outlined">search</span></div>
+
+  <div id="weather-btn">
+    <span id="weather-loading" style="font-size: 8px;">載入中</span>
+  </div>
+
+  <div id="weather-overlay">
+    <div class="weather-modal" id="weather-modal">
+      <div class="weather-header">
+        <span>中央氣象署預報</span>
+        <a href="https://www.cwa.gov.tw/V8/C/W/County/index.html" target="_blank" class="open-external">
+          在新分頁開啟 <span class="material-symbols-outlined" style="font-size:16px;">open_in_new</span>
+        </a>
+      </div>
+      <iframe src="https://www.cwa.gov.tw/V8/C/W/County/index.html" id="weather-iframe"></iframe>
+    </div>
+  </div>
+
+  <div id="search-overlay">
+    <div class="search-modal" id="search-modal">
+      <input type="text" id="search-input" placeholder="Google 搜尋..." style="flex:1; padding:12px 16px; border-radius:14px; border:1px solid rgba(0,0,0,0.1); outline:none; font-size:16px; background:rgba(255,255,255,0.5); transition: background 0.3s;">
+      <button id="search-go" style="padding:0 18px; border-radius:14px; border:none; background:#add5ff; color:white; font-weight:600; cursor:pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);">搜尋</button>
+    </div>
+  </div>
+
+  <div id="custom-theme-overlay">
+    <div class="custom-theme-modal" id="custom-theme-modal">
+      <h3>自訂背景圖片</h3>
+      <input type="text" id="custom-url-input" placeholder="請貼上圖片網址 (URL)...">
+      <div class="btns">
+        <button id="custom-theme-save" style="background: #add5ff; color: #000;">儲存</button>
+        <button id="custom-theme-cancel" style="background: rgba(0,0,0,0.05); color: #000;">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="celebrate-btn">
+    <img id="celebrate-img" src="https://www.google.com/logos/fnbx/new_years/icon_idle_2021.gif" alt="celebrate" style="width: 70%; height: 70%; object-fit: contain;">
+  </div>
+
+  <div id="menu-btn">☰</div>
+
+  <div id="menu-overlay">
+    <div class="controls">
+      <span>字體大小：</span>
+      <div class="custom-select-container" id="size-dropdown">
+        <div class="select-trigger" data-value="medium"><span>中</span><small>▼</small></div>
+        <div class="select-options">
+          <div data-value="small">小</div>
+          <div data-value="medium">中</div>
+          <div data-value="large">大</div>
+        </div>
+      </div>
+      <br><br>
+      <span>佈景主題：</span>
+      <div class="custom-select-container" id="theme-dropdown">
+        <div class="select-trigger" data-value="default"><span>預設</span><small>▼</small></div>
+        <div class="select-options">
+          <div data-value="default">預設</div>
+          <div data-value="illustration">插圖</div>
+          <div data-value="custom">自訂</div>
+        </div>
+      </div>
+      <br><br>
+      <span>顯示模式：</span>
+      <div class="custom-select-container" id="mode-dropdown">
+        <div class="select-trigger" data-value="days"><span>天</span><small>▼</small></div>
+        <div class="select-options">
+          <div data-value="days">天</div>
+          <div data-value="dhm">天時分</div>
+          <div data-value="dhms">天時分秒</div>
+        </div>
+      </div>
+      <br><br>
+      <button class="dev-btn" id="dev-btn">開發者</button>
+    </div>
+  </div>
+
+  <div class="developer-modal" id="developer-modal">
+    <button class="developer-close" id="developer-close">✕</button>
+    <div class="developer-header">
+      <img src="https://raw.githubusercontent.com/Ruixue9626/Daily-ru/bda8ea8e35c3a68a0b94b0b33c6962206dbc7228/%E7%84%A1%E6%A8%99%E9%A1%8C248_20250906113331.png" alt="logo">
+      <div class="text">
+        <h2>Daily.ru 畢業倒計時</h2>
+      </div>
+    </div>
+    <div class="developer-links">
+      <button onclick="window.open('https://discord.gg/mqfKKmQ4Tt','_blank')">Discord</button>
+      <button onclick="window.open('https://www.threads.com/@ruixue.9626','_blank')">Threads</button>
+      <button onclick="window.open('https://github.com/Ruixue9626/Daily-ru/','_blank')">Github</button>
+      <button onclick="window.open('https://ruixue.cc.cd/','_blank')">About me</button>
+    </div>
+    <div class="developer-footer">製作：Ruixue 網站icon：PixAi</div>
+    <div class="developer-footer">©2025 Ruixue Code Studio</div>
+  </div>
+
+  <script>
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2,"0");
+    const dd = String(today.getDate()).padStart(2,"0");
+    const todayStrFormal = `${yyyy}年${mm}月${dd}日`;
+
+    document.getElementById("today-date").textContent = todayStrFormal;
+
+    const countdownEl = document.getElementById("countdown");
+
+    function setupCustomSelect(id, onChange) {
+      const container = docu
