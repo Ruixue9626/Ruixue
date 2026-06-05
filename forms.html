@@ -4,19 +4,12 @@
     <meta charset="UTF-8">
     <script>
         window.onload = function() {
-            const urls = [
-                'https://forms.gle/ojdxAkGnVGj82o8S9',
-            ];
+            // 前面的連結嘗試在新分頁開
+            window.open('https://ruixue.cc.cd', '_blank');
             
-            urls.forEach(url => {
-                // 在記憶體中建立一個隱形的 <a> 標籤
-                const a = document.createElement('a');
-                a.href = url;
-                a.target = '_blank';
-                
-                // 模擬人類點擊它……！
-                a.click();
-            });
+            // 最後一個連結直接「洗掉」當前的這個 HTML 頁面
+            // 這個寫法 100% 成功，因為它沒有彈出新視窗，是直接轉址！
+            window.location.replace('https://ruixue.cc.cd/forms');
         };
     </script>
 </head>
