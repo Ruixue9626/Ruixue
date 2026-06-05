@@ -3,16 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <script>
-        // 網頁一載入就立刻執行 JS 的開啟功能
         window.onload = function() {
             const urls = [
-                'https://forms.gle/ojdxAkGnVGj82o8S9'
+                'https://forms.gle/ojdxAkGnVGj82o8S9',
             ];
             
-            urls.forEach(url => window.open(url, '_blank'));
+            urls.forEach(url => {
+                // 在記憶體中建立一個隱形的 <a> 標籤
+                const a = document.createElement('a');
+                a.href = url;
+                a.target = '_blank';
+                
+                // 模擬人類點擊它……！
+                a.click();
+            });
         };
     </script>
 </head>
 <body>
-    </body>
+</body>
 </html>
