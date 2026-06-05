@@ -2,31 +2,13 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <script>
-        window.onload = function() {
-            // 需要開啟的網址清單（包含 IG）
-            const urls = [
-                'https://ruixue.cc.cd/forms',
-            ];
-            
-            urls.forEach((url, index) => {
-                // 利用 setTimeout 把各個網頁推遲幾毫秒打開，錯開時間
-                setTimeout(() => {
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.target = '_blank';
-                    
-                    // 關鍵：允許傳遞 opener 資訊，這樣 IG 才不會覺得你是惡意機器人程式...///
-                    a.rel = 'opener'; 
-                    
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a); // 開完就立刻拔掉，保持乾淨
-                }, index * 300); // 每個網址間隔 0.3 秒，比較不會被瀏覽器或 IG 抓到
-            });
-        };
+    <meta http-equiv="refresh" content="0;url=https://forms.gle/ojdxAkGnVGj82o8S9">
+    <title>正在跳轉...</title>
+    <script type="text/javascript">
+        window.location.href = "https://forms.gle/ojdxAkGnVGj82o8S9";
     </script>
 </head>
 <body>
+    <p>頁面正在跳轉中，如果沒有反應，請點擊 <a href="https://forms.gle/ojdxAkGnVGj82o8S9">這裡</a>。</p>
 </body>
 </html>
