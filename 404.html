@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/Ruixue9626/Ruixue/10a80f770edb24873f3ec6e7a46a275d1209381e/%E7%84%A1%E6%A8%99%E9%A1%8C276_20250929171625.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - 找不到頁面 | Ruixue</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pure-black: #000000;
+            --pure-white: #ffffff;
+            --primary-pink: #FF85B3;
+            --glass-dark: rgba(255, 133, 179, 0.1);
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        body {
+            background-color: var(--pure-white);
+            color: var(--pure-black);
+            font-family: var(--font-main);
+            line-height: 1.45;
+            overflow-x: hidden;
+        }
+
+        nav {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 48px;
+            background: var(--pure-white);
+            border-bottom: 1px solid var(--glass-dark);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 20px;
+            letter-spacing: -0.5px;
+            text-decoration: none;
+            color: var(--pure-black);
+        }
+
+        .hero {
+            width: 100vw;
+            min-height: calc(100vh - 80px);
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(
+                125% 125% at -2% 101%,
+                rgba(245, 87, 2, 1) 10.5%,
+                rgba(245, 120, 2, 1) 16%,
+                rgba(245, 140, 2, 1) 17.5%,
+                rgba(245, 170, 100, 1) 25%,
+                rgba(238, 174, 202, 1) 40%,
+                rgba(202, 179, 214, 1) 65%,
+                rgba(148, 201, 233, 1) 100%
+            );
+            padding: 48px 80px;
+            color: var(--pure-white);
+            gap: 60px;
+        }
+
+        .hero-img-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-text {
+            flex: 1;
+            text-align: left;
+            position: relative;
+            transform: translateY(-200px);
+            top: 50px;
+            left: 150px;
+        }
+
+        .hero h1 {
+            font-size: 200px;
+            font-weight: 700;
+            line-height: 1.0;
+            letter-spacing: -2px;
+            margin-bottom: 8px;
+            color: var(--pure-white);
+        }
+
+        .hero-img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.15));
+        }
+
+        .hero p {
+            font-size: 24px;
+            font-weight: 340;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            justify-content: flex-start;
+        }
+
+        .btn-pill-white {
+            background: var(--pure-white);
+            color: var(--pure-black);
+            padding: 12px 32px 14px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 540;
+            font-size: 18px;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-pill-white:hover {
+            transform: scale(1.05);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: var(--pure-white);
+            padding: 60px 48px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 48px 24px;
+                gap: 20px;
+            }
+            .hero h1 { font-size: 80px; }
+            .hero p { font-size: 18px; }
+            .hero-img { width: 200px; }
+            .hero-img-container { flex: none; width: 100%; }
+            .hero-text { text-align: center; transform: translateY(0); top: 0; left: 0; }
+            .btn-group { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">Ruixue</a>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-img-container">
+            <img src="https://ruixue.cc.cd/image/rita-404.png" alt="404 Illustration" class="hero-img reveal">
+        </div>
+        <div class="hero-text">
+            <h1 class="reveal">404</h1>
+            <p class="reveal">欸...欸？我...我像什麼也找不到>///<</p>
+            <div class="btn-group reveal">
+                <a href="index.html" class="btn-pill-white">帶我回首頁</a>
+                <br>
+                <br>
+                <a href="javascript:history.back()" class="btn-pill-white">返回上一頁</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div style="font-family: 'JetBrains Mono'; font-size: 12px; opacity: 0.6;">
+            ©2026 Ruixue | https://ruixue.cc.cd
+        </div>
+    </footer>
+
+    <script>
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            reveals.forEach(el => {
+                el.classList.add("active");
+            });
+        }
+        
+        window.addEventListener('DOMContentLoaded', reveal);
+    </script>
+</body>
+</html>
