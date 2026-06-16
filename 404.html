@@ -176,7 +176,7 @@
 
     <div class="hero">
         <div class="hero-img-container">
-            <img src="https://github.com/Ruixue9626/Ruixue/blob/main/image/rita-404.png?raw=true" alt="404 Illustration" class="hero-img reveal">
+            <img src="https://ruixue.cc.cd/image/rita-404.png" alt="404 Illustration" class="hero-img reveal">
         </div>
         <div class="hero-text">
             <h1 class="reveal">404</h1>
@@ -202,7 +202,11 @@
             });
         }
         
-        window.addEventListener('DOMContentLoaded', reveal);
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', reveal);
+        } else {
+            reveal();
+        }
     </script>
 </body>
 </html>
