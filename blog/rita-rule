@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/Ruixue9626/Ruixue/10a80f770edb24873f3ec6e7a46a275d1209381e/%E7%84%A1%E6%A8%99%E9%A1%8C276_20250929171625.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruixue | rita</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pure-black: #000000;
+            --pure-white: #ffffff;
+            --primary-pink: #FF85B3;
+            --soft-pink: #FFF0F6;
+            --glass-dark: rgba(255, 133, 179, 0.1);
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--pure-white);
+            color: var(--pure-black);
+            font-family: var(--font-main);
+            line-height: 1.6;
+        }
+
+        nav {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 48px;
+            background: var(--pure-white);
+            border-bottom: 1px solid var(--glass-dark);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 20px;
+            text-decoration: none;
+            color: var(--pure-black);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.54px;
+            color: var(--primary-pink);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .post-date {
+            font-size: 16px;
+            color: rgba(0,0,0,0.5);
+            margin-bottom: 48px;
+        }
+
+        .post-content {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .post-content p {
+            margin-bottom: 24px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 60px;
+            color: var(--primary-pink);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: var(--pure-white);
+            padding: 60px 48px;
+            text-align: center;
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">Ruixue</a>
+    </nav>
+
+    <article class="container">
+        <span class="section-label">Blog Post</span>
+        <h1>Rita Rule</h1>
+        <div class="post-date">發布日期：2026 年 6 月 16 日</div>
+        
+        <div class="post-content">
+            <p>e屋咕嘎嘎</p>
+        </div>
+
+        <a href="../index.html" class="back-link">← 返回首頁</a>
+    </article>
+
+    <footer>
+        <div style="font-family: 'JetBrains Mono'; font-size: 12px; opacity: 0.6;">
+            ©2026 Ruixue | https://ruixue.cc.cd
+        </div>
+    </footer>
+</body>
+</html>
