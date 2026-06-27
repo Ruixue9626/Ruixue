@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 清邁家族旅遊</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #000000;
+    --canvas: #ffffff;
+    --surface-soft: #f7f7f5;
+    --hairline: #e6e6e6;
+    --hairline-soft: #f1f1f1;
+    --block-lime: #dceeb1;
+    --block-lilac: #c5b0f4;
+    --block-cream: #f4ecd6;
+    --block-pink: #efd4d4;
+    --block-mint: #c8e6cd;
+    --block-coral: #f3c9b6;
+    --block-navy: #1f1d3d;
+    --accent-magenta: #ff3d8b;
+    --pill: 9999px;
+    --r-lg: 24px;
+    --r-md: 8px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--canvas);
+    color: var(--ink);
+    font-size: 18px;
+    line-height: 1.45;
+    letter-spacing: -0.2px;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--canvas);
+    border-bottom: 1px solid var(--hairline);
+    height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px;
+  }
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; letter-spacing: 1.5px;
+    text-transform: uppercase; font-weight: 500;
+  }
+  .nav-links { display: flex; gap: 8px; align-items: center; }
+  .nav-pill {
+    background: var(--ink); color: var(--canvas);
+    border: none; cursor: pointer;
+    padding: 8px 18px; border-radius: var(--pill);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; font-weight: 500;
+    transition: opacity 0.15s;
+  }
+  .nav-pill:hover { opacity: 0.8; }
+  .nav-pill.ghost {
+    background: var(--canvas); color: var(--ink);
+    border: 1.5px solid var(--hairline);
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-strip {
+    background: var(--block-navy); color: var(--canvas);
+    height: 36px; overflow: hidden;
+    display: flex; align-items: center;
+  }
+  .marquee-track {
+    display: flex; gap: 48px; white-space: nowrap;
+    animation: marquee 22s linear infinite;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase;
+  }
+  @keyframes marquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 96px 32px 80px;
+    max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+  }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 400;
+    letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 24px; opacity: 0.5;
+  }
+  .hero-title {
+    font-size: 72px; font-weight: 300;
+    line-height: 1.0; letter-spacing: -2px;
+    margin-bottom: 32px;
+  }
+  .hero-title strong { font-weight: 700; }
+  .hero-desc {
+    font-size: 20px; font-weight: 300;
+    line-height: 1.4; letter-spacing: -0.14px;
+    opacity: 0.7; margin-bottom: 40px;
+  }
+  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--ink); color: var(--canvas);
+    border: none; cursor: pointer;
+    padding: 12px 24px; border-radius: var(--pill);
+    font-size: 16px; font-weight: 500;
+    transition: opacity 0.15s;
+  }
+  .btn-primary:hover { opacity: 0.8; }
+  .btn-secondary {
+    background: var(--canvas); color: var(--ink);
+    border: 1.5px solid var(--ink); cursor: pointer;
+    padding: 12px 24px; border-radius: var(--pill);
+    font-size: 16px; font-weight: 500;
+    transition: background 0.15s;
+  }
+  .btn-secondary:hover { background: var(--surface-soft); }
+
+  /* hero visual */
+  .hero-visual {
+    background: var(--block-lilac);
+    border-radius: var(--r-lg);
+    padding: 48px;
+    display: flex; flex-direction: column; gap: 16px;
+    overflow: hidden;
+  }
+  .trip-stat { display: flex; justify-content: space-between; align-items: flex-end; }
+  .stat-num { font-size: 64px; font-weight: 700; line-height: 1; }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+    opacity: 0.6; padding-bottom: 8px;
+  }
+  .date-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .chip {
+    background: rgba(0,0,0,0.1); border-radius: var(--pill);
+    padding: 6px 14px; font-size: 13px; font-weight: 500;
+  }
+
+  /* ── SECTION WRAPPER ── */
+  .section-wrap { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+  .section-gap { margin: 96px 0; }
+
+  /* ── COLOR BLOCKS ── */
+  .color-block {
+    border-radius: var(--r-lg);
+    padding: 48px;
+    margin: 0 32px 96px;
+  }
+  @media (max-width: 768px) {
+    .color-block { border-radius: 0; margin: 0 0 64px; }
+  }
+
+  /* ── VISA SECTION ── */
+  .visa-block {
+    background: var(--block-mint);
+  }
+  .block-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    opacity: 0.6; margin-bottom: 20px;
+  }
+  .block-title {
+    font-size: 42px; font-weight: 300; letter-spacing: -1px;
+    line-height: 1.1; margin-bottom: 32px;
+  }
+  .block-title strong { font-weight: 700; }
+  .info-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .info-card {
+    background: rgba(255,255,255,0.55); border-radius: 16px;
+    padding: 24px;
+  }
+  .info-card h4 {
+    font-size: 14px; font-weight: 600; margin-bottom: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .info-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .info-card li { font-size: 15px; font-weight: 300; display: flex; gap: 8px; }
+  .info-card li::before { content: '—'; opacity: 0.4; flex-shrink: 0; }
+
+  /* ── DAY SECTIONS ── */
+  .day-header {
+    display: flex; align-items: flex-start; gap: 32px;
+    margin-bottom: 48px;
+  }
+  .day-badge {
+    font-size: 80px; font-weight: 700; line-height: 0.9;
+    letter-spacing: -3px; flex-shrink: 0;
+  }
+  .day-meta h2 {
+    font-size: 36px; font-weight: 700; letter-spacing: -1px;
+    margin-bottom: 6px;
+  }
+  .day-meta .day-sub { font-size: 18px; font-weight: 300; opacity: 0.6; }
+
+  .timeline { display: flex; flex-direction: column; gap: 4px; }
+  .tl-item {
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 16px; align-items: start;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+  .tl-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.5px;
+    opacity: 0.5; padding-top: 2px;
+  }
+  .tl-content { display: flex; flex-direction: column; gap: 6px; }
+  .tl-name { font-size: 17px; font-weight: 500; }
+  .tl-desc { font-size: 15px; font-weight: 300; opacity: 0.7; line-height: 1.4; }
+  .tl-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag {
+    font-size: 11px; font-weight: 500; padding: 3px 10px;
+    border-radius: var(--pill); background: rgba(0,0,0,0.1);
+    font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px; text-transform: uppercase;
+    cursor: default;
+  }
+  .tag.btn-tag { cursor: pointer; background: var(--ink); color: var(--canvas); }
+  .tag.btn-tag:hover { opacity: 0.75; }
+
+  /* elephant divider */
+  .elephant-divider {
+    text-align: center; padding: 32px 0;
+    font-size: 28px; opacity: 0.15;
+    letter-spacing: 24px;
+  }
+
+  /* ── QUIZ BLOCK ── */
+  .quiz-block { background: var(--block-coral); }
+  .quiz-intro { max-width: 560px; margin-bottom: 32px; }
+  .quiz-btn {
+    background: var(--ink); color: var(--canvas);
+    border: none; cursor: pointer;
+    padding: 14px 32px; border-radius: var(--pill);
+    font-size: 17px; font-weight: 500;
+    transition: opacity 0.15s;
+  }
+  .quiz-btn:hover { opacity: 0.8; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--canvas);
+    border-top: 1px solid var(--hairline);
+    padding: 64px 32px;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 32px;
+    max-width: 1280px; margin: 0 auto;
+  }
+  .footer-logo { font-size: 48px; font-weight: 700; letter-spacing: -2px; line-height: 1; }
+  .footer-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+    opacity: 0.4; margin-top: 12px;
+  }
+  .footer-note { font-size: 14px; font-weight: 300; opacity: 0.5; max-width: 320px; line-height: 1.6; }
+
+  /* ── MODAL ── */
+  .modal-backdrop {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.55); z-index: 1000;
+    align-items: center; justify-content: center;
+    padding: 24px;
+    animation: backdropIn 0.2s ease;
+  }
+  .modal-backdrop.open { display: flex; }
+  @keyframes backdropIn { from { opacity: 0 } to { opacity: 1 } }
+
+  .modal {
+    background: var(--canvas);
+    border-radius: 20px;
+    max-width: 600px; width: 100%;
+    max-height: 90vh; overflow-y: auto;
+    padding: 40px;
+    animation: modalIn 0.25s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.92) translateY(12px) }
+    to { opacity: 1; transform: scale(1) translateY(0) }
+  }
+  .modal-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 28px;
+  }
+  .modal-title { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+  .modal-close {
+    background: var(--surface-soft); border: none; cursor: pointer;
+    width: 36px; height: 36px; border-radius: 50%;
+    font-size: 18px; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .modal-close:hover { background: var(--hairline); }
+  .modal-body { font-size: 16px; font-weight: 300; line-height: 1.65; }
+  .modal-body p { margin-bottom: 16px; }
+  .modal-body h4 {
+    font-size: 13px; font-weight: 600; margin: 24px 0 10px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 1px; text-transform: uppercase; opacity: 0.6;
+  }
+  .modal-body ul { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .modal-body li { display: flex; gap: 10px; }
+  .modal-body li::before { content: '→'; opacity: 0.4; flex-shrink: 0; }
+
+  /* ── QUIZ MODAL ── */
+  .quiz-q { margin-bottom: 28px; }
+  .quiz-q-text { font-size: 18px; font-weight: 500; margin-bottom: 14px; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    background: var(--surface-soft); border: 2px solid transparent;
+    border-radius: var(--r-md); padding: 12px 16px;
+    cursor: pointer; font-size: 15px; font-weight: 400;
+    text-align: left; transition: all 0.15s;
+  }
+  .quiz-opt:hover { background: var(--block-cream); }
+  .quiz-opt.correct { background: var(--block-mint); border-color: #2a9d5c; }
+  .quiz-opt.wrong { background: var(--block-pink); border-color: #e05252; }
+  .quiz-opt:disabled { cursor: default; }
+  .quiz-feedback {
+    font-size: 14px; margin-top: 10px; font-weight: 500;
+    min-height: 20px;
+  }
+  .quiz-feedback.ok { color: #1ea64a; }
+  .quiz-feedback.no { color: #cc3333; }
+  .quiz-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 24px;
+  }
+  .quiz-progress {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 1px; opacity: 0.5;
+  }
+  .quiz-next {
+    background: var(--ink); color: var(--canvas);
+    border: none; cursor: pointer;
+    padding: 10px 22px; border-radius: var(--pill);
+    font-size: 14px; font-weight: 500;
+    transition: opacity 0.15s;
+    display: none;
+  }
+  .quiz-next:hover { opacity: 0.8; }
+  .quiz-result {
+    text-align: center; padding: 16px 0;
+    display: none;
+  }
+  .quiz-score { font-size: 56px; font-weight: 700; letter-spacing: -2px; }
+  .quiz-result-msg { font-size: 18px; font-weight: 300; margin-top: 8px; opacity: 0.7; }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* ── TIPS STRIP ── */
+  .tips-row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+    gap: 12px; margin-top: 20px;
+  }
+  .tip-chip {
+    background: rgba(255,255,255,0.45); border-radius: 12px;
+    padding: 16px; font-size: 14px; font-weight: 300; line-height: 1.4;
+  }
+  .tip-chip strong { font-weight: 600; display: block; margin-bottom: 4px; font-size: 13px; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; padding: 64px 24px 48px; }
+    .hero-title { font-size: 52px; }
+    .color-block { padding: 32px 24px; }
+    .day-badge { font-size: 56px; }
+  }
+  @media (max-width: 560px) {
+    .hero-title { font-size: 40px; }
+    .day-header { flex-direction: column; gap: 12px; }
+    nav { padding: 0 16px; }
+    .section-wrap { padding: 0 16px; }
+    .color-block { padding: 24px 20px; }
+    .nav-links .nav-pill.ghost { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">清邁 · 2026</div>
+  <div class="nav-links">
+    <button class="nav-pill ghost" onclick="scrollTo({top:document.getElementById('days').offsetTop-60,behavior:'smooth'})">行程</button>
+    <button class="nav-pill" onclick="openModal('quiz-modal')">挑戰問答 🐘</button>
+  </div>
+</nav>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span>清邁 · CHIANG MAI</span><span>·</span>
+    <span>蘭納王朝</span><span>·</span>
+    <span>大象保育</span><span>·</span>
+    <span>黏黏瀑布</span><span>·</span>
+    <span>長頸族</span><span>·</span>
+    <span>泰北古城</span><span>·</span>
+    <span>2026 FAMILY TRIP</span><span>·</span>
+    <span>清邁 · CHIANG MAI</span><span>·</span>
+    <span>蘭納王朝</span><span>·</span>
+    <span>大象保育</span><span>·</span>
+    <span>黏黏瀑布</span><span>·</span>
+    <span>長頸族</span><span>·</span>
+    <span>泰北古城</span><span>·</span>
+    <span>2026 FAMILY TRIP</span><span>·</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <div class="hero-eyebrow">2026 · 家族旅遊 · 泰國清邁</div>
+    <h1 class="hero-title"><strong>五天四夜</strong><br>清邁<br>大冒險</h1>
+    <p class="hero-desc">大象、古城、瀑布、夜市——帶著全家人，走進泰北最迷人的角落。</p>
+    <div class="hero-ctas">
+      <button class="btn-primary" onclick="scrollTo({top:document.getElementById('days').offsetTop-60,behavior:'smooth'})">查看完整行程</button>
+      <button class="btn-secondary" onclick="openModal('visa-modal')">入境注意事項</button>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="trip-stat">
+      <span class="stat-num">5</span>
+      <span class="stat-label">天數</span>
+    </div>
+    <div class="trip-stat">
+      <span class="stat-num">14</span>
+      <span class="stat-label">景點</span>
+    </div>
+    <div class="date-chips">
+      <span class="chip">7/1 出發</span>
+      <span class="chip">直飛 2h45m</span>
+      <span class="chip">7/5 返台</span>
+      <span class="chip">🐘 大象園</span>
+      <span class="chip">免簽入境</span>
+    </div>
+  </div>
+</div>
+
+<!-- VISA SECTION -->
+<div class="color-block visa-block reveal">
+  <div class="section-wrap" style="padding:0">
+    <div class="block-eyebrow">入境指南</div>
+    <div class="block-title">出發前<br><strong>必看清單</strong></div>
+    <div class="info-grid">
+      <div class="info-card">
+        <h4>簽證</h4>
+        <ul>
+          <li>台灣護照免簽，停留最長 60 日</li>
+          <li>可再申請延長 30 天</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>必備文件</h4>
+        <ul>
+          <li>護照效期剩餘 6 個月以上</li>
+          <li>回程機票證明</li>
+          <li>住宿確認單</li>
+          <li>財力證明（家庭 4 萬泰銖等值外幣）</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>數位入境卡 TDAC</h4>
+        <ul>
+          <li>入境前 72 小時內申請</li>
+          <li>完成後截圖 QR Code 保存</li>
+          <li>可加快通關速度</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>海關 & 注意</h4>
+        <ul>
+          <li>免稅：紙菸 200 支、酒 1 公升</li>
+          <li>禁止：毒品、電子菸、仿冒品</li>
+          <li>電壓 220V（插座與台灣相容）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="elephant-divider">🐘 🐘 🐘</div>
+
+<!-- DAYS -->
+<div id="days"></div>
+
+<!-- DAY 1 -->
+<div class="color-block reveal" style="background:var(--block-lilac)">
+  <div class="block-eyebrow">Day 01 · 7月1日（三）</div>
+  <div class="day-header">
+    <div class="day-badge">01</div>
+    <div class="day-meta">
+      <h2>抵達清邁 · 大象初見面</h2>
+      <div class="day-sub">飛行 2h45m — 下午迎接你的第一隻大象</div>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-time">05:00</div>
+      <div class="tl-content">
+        <div class="tl-name">出發至桃園機場 T2</div>
+        <div class="tl-desc">長榮航空 07:40 起飛</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">10:25</div>
+      <div class="tl-content">
+        <div class="tl-name">抵達清邁國際機場</div>
+        <div class="tl-desc">清邁是泰國第二大城市，蘭納 Lan Na 王朝發源地</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">12:00</div>
+      <div class="tl-content">
+        <div class="tl-name">午餐 · Baan Suan Café</div>
+        <div class="tl-desc">樓上附設按摩（不接受預約）、小孩手作體驗</div>
+        <div class="tl-tags"><span class="tag">餐廳</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">14:00</div>
+      <div class="tl-content">
+        <div class="tl-name">🐘 Lanna Elephant Care 大象園</div>
+        <div class="tl-desc">強調大象友善保育，可親手餵食、製作草藥球、為大象洗澡</div>
+        <div class="tl-tags">
+          <span class="tag">重點行程</span>
+          <span class="tag btn-tag" onclick="openModal('elephant-modal')">詳細資訊</span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">18:00</div>
+      <div class="tl-content">
+        <div class="tl-name">晚餐 · CHUM Northern Kitchen</div>
+        <div class="tl-desc">古城內的泰北料理</div>
+        <div class="tl-tags"><span class="tag">餐廳</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">晚上</div>
+      <div class="tl-content">
+        <div class="tl-name">清邁夜市漫步</div>
+        <div class="tl-desc">Joost Smoothies · Suriwong Book Center 採購</div>
+        <div class="tl-tags"><span class="tag">夜市</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="elephant-divider">🐘 🐘 🐘</div>
+
+<!-- DAY 2 -->
+<div class="color-block reveal" style="background:var(--block-lime)">
+  <div class="block-eyebrow">Day 02 · 7月2日（四）</div>
+  <div class="day-header">
+    <div class="day-badge">02</div>
+    <div class="day-meta">
+      <h2>山林冒險 · 長頸族 · 黏黏瀑布</h2>
+      <div class="day-sub">叢林飛車、文化部落、天然防滑瀑布</div>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-time">上午</div>
+      <div class="tl-content">
+        <div class="tl-name">🎢 Pong Yang Jungle Coaster & Zipline</div>
+        <div class="tl-desc">叢林過山車刺激玩，旁邊 Jungle De Café 可補充咖啡因</div>
+        <div class="tl-tags"><span class="tag">戶外活動</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">中午前</div>
+      <div class="tl-content">
+        <div class="tl-name">Karen Village · 卡倫長頸族村</div>
+        <div class="tl-desc">來自緬甸的克倫族難民，女性從 5、6 歲起套銅環，以脖子長為美</div>
+        <div class="tl-tags">
+          <span class="tag">文化體驗</span>
+          <span class="tag btn-tag" onclick="openModal('karen-modal')">了解更多</span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">午餐</div>
+      <div class="tl-content">
+        <div class="tl-name">葷食 · Krua Lawng Khao</div>
+        <div class="tl-desc">素食另行前往 Green Hand Vegan & Vegetarian</div>
+        <div class="tl-tags"><span class="tag">分兩車</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">下午</div>
+      <div class="tl-content">
+        <div class="tl-name">💧 黏黏瀑布（Bua Tong Sticky Waterfall）</div>
+        <div class="tl-desc">富含碳酸鈣的石灰岩岩面，摩擦力超強，可以徒手攀爬！約四層樓高</div>
+        <div class="tl-tags"><span class="tag">自然景觀</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">傍晚</div>
+      <div class="tl-content">
+        <div class="tl-name">Mae Kha Canal 湄卡運河市集</div>
+        <div class="tl-desc">泰式小樽運河風情</div>
+        <div class="tl-tags"><span class="tag">市集</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">晚餐</div>
+      <div class="tl-content">
+        <div class="tl-name">SoLao Restaurant / Vegan Heaven</div>
+        <div class="tl-tags"><span class="tag">分兩車</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="elephant-divider">🐘 🐘 🐘</div>
+
+<!-- DAY 3 -->
+<div class="color-block reveal" style="background:var(--block-cream)">
+  <div class="block-eyebrow">Day 03 · 7月3日（五）</div>
+  <div class="day-header">
+    <div class="day-badge">03</div>
+    <div class="day-meta">
+      <h2>生態村落 · 泰囧村一日遊</h2>
+      <div class="day-sub">泰國首個生態旅遊村，海拔 1,300m 的高山秘境</div>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-time">上午</div>
+      <div class="tl-content">
+        <div class="tl-name">🥥 Coconut Market</div>
+        <div class="tl-desc">椰子市集採購</div>
+        <div class="tl-tags"><span class="tag">市集</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">午餐</div>
+      <div class="tl-content">
+        <div class="tl-name">Mae Kampong 泰囧村</div>
+        <div class="tl-desc">泰國首個生態旅遊村，木房子沿山谷排列，海拔約 1,300m，至今保留原始泰北生態風貌</div>
+        <div class="tl-tags">
+          <span class="tag">生態村</span>
+          <span class="tag">午餐</span>
+          <span class="tag">咖啡</span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">下午</div>
+      <div class="tl-content">
+        <div class="tl-name">Baan Kang Wat</div>
+        <div class="tl-desc">清邁文青聚落，手工藝品與咖啡廳</div>
+        <div class="tl-tags"><span class="tag">文創</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">傍晚</div>
+      <div class="tl-content">
+        <div class="tl-name">Boontathong 按摩 / Big C 採購</div>
+        <div class="tl-tags"><span class="tag">分兩車</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">晚餐</div>
+      <div class="tl-content">
+        <div class="tl-name">Roskon Namyapoo / Vegetarian Food Ratsamitham</div>
+        <div class="tl-tags"><span class="tag">分兩車</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="elephant-divider">🐘 🐘 🐘</div>
+
+<!-- DAY 4 -->
+<div class="color-block reveal" style="background:var(--block-pink)">
+  <div class="block-eyebrow">Day 04 · 7月4日（六）</div>
+  <div class="day-header">
+    <div class="day-badge">04</div>
+    <div class="day-meta">
+      <h2>古城文化 · 泰服體驗 · 手作料理</h2>
+      <div class="day-sub">市集、寺廟、銀飾、週六夜市——最豐富的一天</div>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-time">早上</div>
+      <div class="tl-content">
+        <div class="tl-name">🥞 Jing Jai Market 晨市</div>
+        <div class="tl-desc">Guu Fusion Roti & Tea 集合吃煎餅</div>
+        <div class="tl-tags"><span class="tag">市集</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">上午</div>
+      <div class="tl-content">
+        <div class="tl-name">👘 泰服體驗拍照</div>
+        <div class="tl-desc">柴迪隆寺 & 塔佩門取景拍攝</div>
+        <div class="tl-tags">
+          <span class="tag">文化</span>
+          <span class="tag btn-tag" onclick="openModal('temple-modal')">寺廟故事</span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">下午</div>
+      <div class="tl-content">
+        <div class="tl-name">古城漫逛</div>
+        <div class="tl-desc">Lanna Artisans 銀飾手作 · 周桂發藤編一條街 · Akha Ama Coffee · Pungngi 買餐包</div>
+        <div class="tl-tags"><span class="tag">手工藝</span><span class="tag">咖啡</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">傍晚</div>
+      <div class="tl-content">
+        <div class="tl-name">瓦落落市場</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">晚餐</div>
+      <div class="tl-content">
+        <div class="tl-name">🍳 手作泰式料理</div>
+        <div class="tl-desc">回民宿一起學做泰式料理！</div>
+        <div class="tl-tags"><span class="tag">體驗</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">夜晚</div>
+      <div class="tl-content">
+        <div class="tl-name">Wua Lai Walking Street</div>
+        <div class="tl-desc">古城南門週六夜市</div>
+        <div class="tl-tags"><span class="tag">夜市</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="elephant-divider">🐘 🐘 🐘</div>
+
+<!-- DAY 5 -->
+<div class="color-block reveal" style="background:var(--block-coral)">
+  <div class="block-eyebrow">Day 05 · 7月5日（日）</div>
+  <div class="day-header">
+    <div class="day-badge">05</div>
+    <div class="day-meta">
+      <h2>僧侶布施 · 最後一杯泰奶</h2>
+      <div class="day-sub">靜謐的清晨告別，帶著滿滿回憶飛回台灣</div>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-time">05:00–07:00</div>
+      <div class="tl-content">
+        <div class="tl-name">🙏 古城僧侶布施</div>
+        <div class="tl-desc">穿著端莊（遮肩膀與膝蓋），將供品放入缽中，雙手合十接受祈福</div>
+        <div class="tl-tags">
+          <span class="tag">文化體驗</span>
+          <span class="tag btn-tag" onclick="openModal('monk-modal')">布施禮儀</span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">07:00</div>
+      <div class="tl-content">
+        <div class="tl-name">☕ Magic Brew Coffee</div>
+        <div class="tl-desc">點泰奶 + 咖啡，鬧著玩最後一次推薦</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">11:35</div>
+      <div class="tl-content">
+        <div class="tl-name">✈️ 搭機返台</div>
+        <div class="tl-desc">掰掰清邁！帶回最棒的家族回憶 🐘</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ CTA -->
+<div class="color-block quiz-block reveal" style="margin-top:0">
+  <div class="section-wrap" style="padding:0">
+    <div class="block-eyebrow">旅遊知識測驗</div>
+    <div class="quiz-intro">
+      <div class="block-title">你對清邁<br><strong>了解多少？</strong></div>
+      <p style="font-size:17px;font-weight:300;opacity:.7;line-height:1.6">
+        出發前挑戰一下，看看你能答對幾題！共 8 題，全部答對就是清邁達人 🏆
+      </p>
+    </div>
+    <button class="quiz-btn" onclick="openModal('quiz-modal')">開始挑戰 →</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">清邁</div>
+    <div class="footer-meta">2026 · 家族旅遊紀念頁</div>
+  </div>
+  <div class="footer-note">
+    慶祝哥哥國中畢業暨努力準備會考，帶著全家人走進泰北最美的角落。
+    每一個景點、每一頓飯、每一隻大象，都是最珍貴的家族記憶。
+  </div>
+</footer>
+
+
+<!-- ══════════════════════ MODALS ══════════════════════ -->
+
+<!-- VISA MODAL -->
+<div class="modal-backdrop" id="visa-modal" onclick="closeSelf(event, 'visa-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">入境泰國注意事項</div>
+      <button class="modal-close" onclick="closeModal('visa-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <h4>簽證</h4>
+      <p>持台灣護照入境泰國享「免簽」待遇，可停留最長 60 日，若需延長可再申請 30 天。</p>
+      <h4>必備文件</h4>
+      <ul>
+        <li>護照效期剩餘 6 個月以上</li>
+        <li>回程 / 前往第三國機票證明</li>
+        <li>住宿確認單</li>
+        <li>財力證明：個人 2 萬泰銖、家庭 4 萬泰銖等值外幣（抽查用）</li>
+      </ul>
+      <h4>數位入境卡 TDAC</h4>
+      <p>入境前 72 小時內可在 TDAC 官網填寫，完成後會獲得 QR Code，請截圖保存。持 QR Code 可加快現場通關速度。</p>
+      <h4>海關規定</h4>
+      <ul>
+        <li>免稅：紙菸 200 支、酒類 1 公升</li>
+        <li>禁止攜帶：毒品、電子菸及相關液體、仿冒品、佛像古董（需許可）</li>
+      </ul>
+      <h4>其他注意</h4>
+      <ul>
+        <li>泰國電壓 220V，插座與台灣相容（雙孔扁插），可直接使用</li>
+        <li>需自備足夠現金（泰銖）</li>
+        <li>出發前再次確認護照效期</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ELEPHANT MODAL -->
+<div class="modal-backdrop" id="elephant-modal" onclick="closeSelf(event, 'elephant-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🐘 Lanna Elephant Care</div>
+      <button class="modal-close" onclick="closeModal('elephant-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>Lanna Elephant Care 是一個強調大象友善保育的園區，專注於提供無鏈條、非強迫的互動體驗。</p>
+      <p>遊客可以親手餵食、製作草藥球、為大象洗澡，在自然環境中近距離體驗大象照護。</p>
+      <h4>體驗項目</h4>
+      <ul>
+        <li>親手餵食大象</li>
+        <li>製作草藥球（大象的點心）</li>
+        <li>帶大象去河邊洗澡</li>
+        <li>了解大象保育理念</li>
+      </ul>
+      <h4>建議準備</h4>
+      <ul>
+        <li>穿著舒適、快乾且不怕髒的衣服（會弄濕弄髒）</li>
+        <li>泳衣 + 毛巾</li>
+        <li>防曬乳、防蚊液、帽子</li>
+        <li>多帶一套換洗衣物</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- KAREN MODAL -->
+<div class="modal-backdrop" id="karen-modal" onclick="closeSelf(event, 'karen-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">長頸族的故事</div>
+      <button class="modal-close" onclick="closeModal('karen-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>清邁長頸族（Karen Long Neck）是來自緬甸的克倫族難民，因戰亂定居泰北。</p>
+      <p>其文化中，女性以脖子長為美。女性從 5、6 歲起開始在頸上套銅環，隨著年齡增長逐漸增加銅環數。</p>
+      <p>事實上並非脖子真的變長，而是銅環重量將肩膀、鎖骨下壓的結果。</p>
+      <h4>特殊習俗</h4>
+      <ul>
+        <li>銅環一生僅在結婚、生子、死亡時摘下</li>
+        <li>銅環重量可達數公斤</li>
+        <li>這是部落女性身份地位與美麗的象徵</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- TEMPLE MODAL -->
+<div class="modal-backdrop" id="temple-modal" onclick="closeSelf(event, 'temple-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">柴迪隆寺 & 塔佩門</div>
+      <button class="modal-close" onclick="closeModal('temple-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <h4>柴迪隆寺（大塔寺）</h4>
+      <p>結合蘭納、印度、斯里蘭卡三種建築風格，是清邁市六大寺廟中最著名的一座。</p>
+      <p>始建於 14 世紀末，由蘭納國王 Saen Muang Ma 啟動，原意是為供奉其父王的骨灰。16 世紀因大地震，佛塔頂部被震毀，供奉近 80 年的玉佛也因此遷移至曼谷玉佛寺。</p>
+      <ul>
+        <li>大佛塔南面兩側有精緻那伽（Naga）雕塑守護</li>
+        <li>主殿內的清邁城市柱是城市最重要的精神地標</li>
+        <li>三座寺廟合併而成今日規模</li>
+      </ul>
+      <h4>塔佩門（Tha Phae Gate）</h4>
+      <p>清邁古城的東門，始建於 13 世紀，是保存最完整的古城城門，也是進入清邁古城的主要入口，更是全清邁最具代表性的地標之一。</p>
+    </div>
+  </div>
+</div>
+
+<!-- MONK MODAL -->
+<div class="modal-backdrop" id="monk-modal" onclick="closeSelf(event, 'monk-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🙏 布施禮儀指南</div>
+      <button class="modal-close" onclick="closeModal('monk-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>泰國是個虔誠的佛教國家，男丁一生必須出家一次（不需要吃素）。清晨僧侶沿街化緣，是泰國最重要的日常宗教活動。</p>
+      <h4>著裝要求</h4>
+      <ul>
+        <li>穿著端莊——確保肩膀與膝蓋有被遮蔽</li>
+        <li>以示對宗教的尊重</li>
+      </ul>
+      <h4>女性特別注意</h4>
+      <ul>
+        <li>絕對不可直接觸碰僧侶的身體</li>
+        <li>也不可觸碰僧侶的袈裟</li>
+        <li>若需遞送供品，請放在地上或透過男性轉交</li>
+      </ul>
+      <h4>布施方式</h4>
+      <ul>
+        <li>將供品放入僧侶的缽中</li>
+        <li>雙手合十、低頭接受僧侶誦經祈福即可</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ MODAL -->
+<div class="modal-backdrop" id="quiz-modal" onclick="closeSelf(event, 'quiz-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">清邁知識大挑戰 🏆</div>
+      <button class="modal-close" onclick="closeModal('quiz-modal')">✕</button>
+    </div>
+    <div id="quiz-container">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</div>
+
+
+<script>
+/* ── MODAL ── */
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (id === 'quiz-modal') initQuiz();
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeSelf(e, id) {
+  if (e.target === document.getElementById(id)) closeModal(id);
+}
+
+/* ── SCROLL REVEAL ── */
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.08 });
+reveals.forEach(el => io.observe(el));
+
+/* ── QUIZ ── */
+const questions = [
+  { q: '清邁是哪個國家的城市？', opts: ['韓國', '泰國', '越南'], ans: 1 },
+  { q: '清邁位於哪個地區？', opts: ['東南亞', '東北亞', '歐洲'], ans: 0 },
+  { q: '早期清邁廣泛用於交通、戰爭與伐木的動物是？', opts: ['猴子', '長頸鹿', '大象'], ans: 2 },
+  { q: '因戰爭從緬甸定居泰北清邁的少數民族是？', opts: ['長頸族', '長舌族', '長耳族'], ans: 0 },
+  { q: '清邁「黏黏瀑布」形成高摩擦力岩面的原因是？', opts: ['氯化鈉', '碳酸鈣', '硫酸鎂'], ans: 1 },
+  { q: '清邁建國背景是哪個王朝？', opts: ['藍牙', '蘭花', '蘭納'], ans: 2 },
+  { q: '塔佩門（Tha Phae Gate）最初是用來做什麼的？', opts: ['防御城門', '拜拜祭祀', '表演歌舞'], ans: 0 },
+  { q: '清邁湄堪彭村（Mae Kampong）是泰國首個什麼旅遊村落？', opts: ['觀光村落', '生態村落', '美食村落'], ans: 1 },
+];
+
+let cur = 0, score = 0, answered = false;
+
+function initQuiz() {
+  cur = 0; score = 0; answered = false;
+  renderQ();
+}
+
+function renderQ() {
+  const c = document.getElementById('quiz-container');
+  if (cur >= questions.length) {
+    const pct = Math.round((score / questions.length) * 100);
+    const msg = pct === 100 ? '完美！你是清邁達人 🏆' : pct >= 75 ? '非常厲害！出發前好好預習了呢 ✨' : pct >= 50 ? '還不錯！旅途中再深入了解吧 😊' : '沒關係，旅途就是最好的教室 🐘';
+    c.innerHTML = `
+      <div class="quiz-result" style="display:block">
+        <div class="quiz-score">${score} / ${questions.length}</div>
+        <div class="quiz-result-msg">${msg}</div>
+        <button class="quiz-btn" style="margin-top:24px" onclick="initQuiz()">再挑戰一次</button>
+      </div>`;
+    return;
+  }
+  const q = questions[cur];
+  c.innerHTML = `
+    <div class="quiz-q">
+      <div class="quiz-q-text">${cur + 1}. ${q.q}</div>
+      <div class="quiz-options" id="opts">
+        ${q.opts.map((o, i) => `<button class="quiz-opt" onclick="pick(${i})">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="qfb"></div>
+    </div>
+    <div class="quiz-nav">
+      <div class="quiz-progress">${cur + 1} / ${questions.length}</div>
+      <button class="quiz-next" id="qnext" onclick="nextQ()">下一題 →</button>
+    </div>`;
+  answered = false;
+}
+
+function pick(i) {
+  if (answered) return;
+  answered = true;
+  const q = questions[cur];
+  const btns = document.querySelectorAll('.quiz-opt');
+  btns.forEach(b => b.disabled = true);
+  btns[i].classList.add(i === q.ans ? 'correct' : 'wrong');
+  if (i !== q.ans) btns[q.ans].classList.add('correct');
+  const fb = document.getElementById('qfb');
+  if (i === q.ans) { score++; fb.textContent = '✓ 答對了！'; fb.className = 'quiz-feedback ok'; }
+  else { fb.textContent = `✗ 正確答案是「${q.opts[q.ans]}」`; fb.className = 'quiz-feedback no'; }
+  document.getElementById('qnext').style.display = 'block';
+}
+
+function nextQ() { cur++; renderQ(); }
+</script>
+</body>
+</html>
