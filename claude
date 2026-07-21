@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>Join Claude!</title>
+<link rel="icon" type="image/png" href="favicon.png">
+
+<!-- Open Graph 標籤：社群平台會抓這些資訊做預覽卡 -->
+<meta property="og:title" content="Join Claude!">
+<meta property="og:description" content="claude.ai">
+<meta property="og:image" content="https://ruixue.cc.cd/image/preview.png">
+<meta property="og:url" content="https://claude.ai">
+<meta property="og:type" content="website">
+
+<!-- Twitter/X 卡片 -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Join Claude!">
+<meta name="twitter:description" content="claude.ai">
+<meta name="twitter:image" content="https://ruixue.cc.cd/image/preview.png">
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+  }
+</style>
+</head>
+<body>
+  <p style="color:#666;font-family:sans-serif;">Loading...</p>
+
+  <script>
+    // 進頁面就導去 Rick Astley
+    window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+  </script>
+</body>
+</html>
+
