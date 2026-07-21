@@ -216,11 +216,11 @@
                 <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/>
             </svg>
         </button>
-        <button class="action-btn" id="profileBtn" title="更多" aria-label="更多">
+        <a class="action-btn" id="profileBtn" href="https://ruixue.cc.cd" target="_blank" title="個人網站" aria-label="個人網站">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
             </svg>
-        </button>
+        </a>
     </div>
 
     <div class="toast" id="toast"></div>
@@ -302,10 +302,6 @@
             }
         });
 
-        document.getElementById('profileBtn').addEventListener('click', () => {
-            showToast('🎵Never gana give you up 🎵');
-        });
-
         function showToast(msg) {
             const t = document.getElementById('toast');
             t.textContent = msg;
@@ -316,4 +312,3 @@
 
 </body>
 </html>
-
