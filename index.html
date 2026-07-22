@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/Ruixue9626/Ruixue/10a80f770edb24873f3ec6e7a46a275d1209381e/%E7%84%A1%E6%A8%99%E9%A1%8C276_20250929171625.png">
+    <link rel="icon" type="image/png" href="https://ruixue.cc.cd/%E7%84%A1%E6%A8%99%E9%A1%8C276_20250929171625.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ruixue</title>
@@ -595,16 +595,23 @@
         }
         window.addEventListener("scroll", reveal);
         
-        // 初始載入優化：使用 DOMContentLoaded 代替 load 以提升反應速度
-        document.addEventListener('DOMContentLoaded', () => {
-            updateGlider(document.querySelector('.tab.active'));
+        function initPage() {
+            const activeTab = document.querySelector('.tab.active') || document.querySelector('.tab');
+            if (activeTab) {
+                updateGlider(activeTab);
+            }
             reveal();
-        });
+        }
 
-        // 視窗縮放監聽與立即執行
-        window.addEventListener('resize', () => updateGlider(document.querySelector('.tab.active')));
-        updateGlider(document.querySelector('.tab.active'));
-        reveal();
+        // 初始載入時先定位滑動塊與 reveal
+        document.addEventListener('DOMContentLoaded', initPage);
+        window.addEventListener('load', initPage);
+
+        // 視窗縮放時更新滑動塊位置
+        window.addEventListener('resize', () => {
+            const activeTab = document.querySelector('.tab.active') || document.querySelector('.tab');
+            if (activeTab) updateGlider(activeTab);
+        });
     </script>
 </body>
 </html>
