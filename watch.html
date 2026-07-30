@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ruixue.cc.cd — 我的收藏庫</title>
+<style>
+  :root{
+    --primary:#024ad8;
+    --primary-bright:#296ef9;
+    --primary-deep:#0e3191;
+    --primary-soft:#c9e0fc;
+    --on-primary:#ffffff;
+    --ink:#1a1a1a;
+    --ink-deep:#000000;
+    --ink-soft:#292929;
+    --on-ink:#ffffff;
+    --canvas:#ffffff;
+    --cloud:#f7f7f7;
+    --fog:#e8e8e8;
+    --steel:#c2c2c2;
+    --graphite:#636363;
+    --charcoal:#3d3d3d;
+    --hairline:#e8e8e8;
+    --hairline-strong:#c2c2c2;
+    --bloom-coral:#ff5050;
+    --bloom-rose:#f9d4d2;
+    --bloom-deep:#b3262b;
+    --error:#b3262b;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Segoe UI","Noto Sans TC","PingFang TC",sans-serif;
+    background:var(--canvas);
+    color:var(--ink);
+    padding-top:64px;
+    min-height:100vh;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- Top banner ---------- */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;
+    height:64px;
+    background:var(--canvas);
+    border-bottom:1px solid var(--hairline);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 20px;
+    z-index:200;
+  }
+  .topbar .left, .topbar .right{
+    display:flex;align-items:center;gap:12px;
+  }
+  .icon-btn{
+    width:44px;height:44px;border:none;background:none;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;color:var(--ink);border-radius:4px;
+  }
+  .icon-btn:hover{background:var(--cloud);}
+  .icon-btn svg{width:24px;height:24px;}
+  .topbar .title{
+    font-size:20px;font-weight:500;color:var(--ink);
+    letter-spacing:0;
+  }
+  .status-actions{display:flex;gap:8px;}
+  .status-btn{
+    font-family:inherit;
+    font-size:12.6px;font-weight:700;letter-spacing:0.126px;
+    padding:8px 14px;border-radius:9999px;border:1px solid var(--steel);
+    background:var(--canvas);color:var(--ink);cursor:pointer;
+    white-space:nowrap;
+  }
+  .status-btn.active{
+    background:var(--ink);color:var(--on-primary);border-color:var(--ink);
+  }
+
+  /* ---------- Fullscreen menu ---------- */
+  .fs-menu{
+    position:fixed;inset:0;background:var(--canvas);
+    z-index:500;
+    display:flex;flex-direction:column;
+    padding:20px;
+    opacity:0;visibility:hidden;pointer-events:none;
+    transform:translateY(-8px);
+    transition:opacity .26s cubic-bezier(.22,1,.36,1),transform .26s cubic-bezier(.22,1,.36,1),background .24s ease,visibility .24s ease;
+  }
+  .fs-menu.open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);}
+  .topbar{transition:background .24s ease,border-color .24s ease,box-shadow .24s ease,color .24s ease;}
+  .fs-menu-top{
+    display:flex;justify-content:flex-start;
+    height:44px;
+  }
+  .fs-menu-list{
+    flex:1;display:flex;flex-direction:column;justify-content:center;
+    gap:8px;
+  }
+  .fs-menu-list a{
+    font-size:32px;font-weight:500;line-height:1.5;color:var(--ink);
+    padding:8px 4px;border-radius:8px;
+  }
+  .fs-menu-list a:active{background:var(--cloud);}
+  .fs-menu-list a.current{color:var(--primary);}
+
+  /* ---------- Layout ---------- */
+  .page{max-width:1024px;margin:0 auto;padding:24px 20px 80px;opacity:1;transform:translateX(0);transition:opacity .26s cubic-bezier(.22,1,.36,1),transform .26s cubic-bezier(.22,1,.36,1);}
+  .page.slide-out-left{opacity:0;transform:translateX(-14px);}
+  .page.slide-out-right{opacity:0;transform:translateX(14px);}
+  .page.slide-in-left{opacity:0;transform:translateX(-14px);}
+  .page.slide-in-right{opacity:0;transform:translateX(14px);}
+  .page.slide-in-left.active,
+  .page.slide-in-right.active{opacity:1;transform:translateX(0);}
+  .section-title{
+    font-size:24px;font-weight:500;line-height:1.17;margin:16px 0 16px;
+    color:var(--ink);
+    transition:color .24s ease;
+  }
+  .section-title .count{
+    color:var(--graphite);font-weight:400;font-size:16px;margin-left:8px;
+  }
+  .empty-hint{
+    color:var(--graphite);font-size:16px;padding:24px 0;
+  }
+
+  /* ---------- Grid & Card ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+    margin-bottom:8px;
+  }
+  @media(min-width:768px){ .grid{grid-template-columns:repeat(3,1fr);} }
+  @media(min-width:1024px){ .grid{grid-template-columns:repeat(4,1fr);} }
+
+  .card{
+    background:var(--canvas);
+    border-radius:16px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+    overflow:hidden;
+    cursor:pointer;
+    display:flex;flex-direction:column;
+    transition:transform .26s cubic-bezier(.22,1,.36,1),box-shadow .26s ease,background .26s ease;
+  }
+  .card .cover{
+    width:100%;aspect-ratio:1/1;
+    background:var(--cloud) center/cover no-repeat;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--steel);font-size:13px;
+  }
+  .card .info{padding:12px 14px 14px;}
+  .card .name{
+    font-size:16px;font-weight:500;line-height:1.3;
+    margin-bottom:6px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  .card .meta{
+    font-size:12px;color:var(--graphite);
+    display:flex;justify-content:space-between;gap:6px;
+    flex-wrap:wrap;align-items:center;
+    transition:color .24s ease;
+  }
+  .card .cat-pill{
+    display:inline-block;background:var(--ink);color:var(--on-primary);
+    border-radius:8px;padding:3px 8px;font-size:11px;
+  }
+  .card .link-btn{
+    border:none;background:none;padding:0;margin:0;
+    color:var(--ink);font-size:12px;font-weight:700;
+    text-decoration:underline;cursor:pointer;
+    transition:color .22s ease;
+  }
+  .card .link-btn:active{opacity:.65;}
+
+  /* ---------- Form ---------- */
+  .form-wrap{max-width:520px;margin:0 auto;padding-top:8px;}
+  .field{margin-bottom:20px;}
+  .field label{
+    display:block;font-size:14px;font-weight:500;margin-bottom:8px;color:var(--ink-soft);
+  }
+  .field input, .field select{
+    width:100%;height:44px;padding:12px 16px;
+    border:1px solid var(--steel);border-radius:4px;
+    font-size:16px;font-family:inherit;color:var(--ink);
+    background:var(--canvas);
+    transition:border-color .24s ease,box-shadow .24s ease,background .24s ease;
+  }
+  .field input:focus, .field select:focus{
+    outline:none;border-color:var(--ink);
+    box-shadow:0 0 0 3px rgba(2,74,216,0.08);
+  }
+  .btn-primary{
+    display:inline-flex;align-items:center;justify-content:center;
+    height:44px;padding:12px 24px;
+    background:var(--primary);color:var(--on-primary);
+    border:none;border-radius:4px;
+    font-size:14px;font-weight:600;letter-spacing:0.7px;text-transform:uppercase;
+    cursor:pointer;width:100%;
+    transition:transform .22s ease,background .22s ease,box-shadow .22s ease;
+  }
+  .btn-primary:active{background:var(--primary-deep);}
+  .btn-danger{
+    display:inline-flex;align-items:center;justify-content:center;
+    height:44px;padding:12px 24px;margin-top:12px;
+    background:var(--canvas);color:var(--error);
+    border:1px solid var(--error);border-radius:4px;
+    font-size:14px;font-weight:600;letter-spacing:0.7px;text-transform:uppercase;
+    cursor:pointer;width:100%;
+  }
+  .btn-secondary{
+    display:inline-flex;align-items:center;justify-content:center;
+    height:44px;padding:12px 24px;
+    background:var(--fog);color:var(--ink);
+    border:1px solid var(--hairline-strong);border-radius:4px;
+    font-size:14px;font-weight:600;letter-spacing:0.7px;text-transform:uppercase;
+    cursor:pointer;width:100%;
+    transition:transform .22s ease,background .22s ease,border-color .22s ease,color .22s ease;
+  }
+  .dialog-backdrop{
+    position:fixed;inset:0;
+    background:rgba(0,0,0,0.32);
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;
+    z-index:600;
+    opacity:0;visibility:hidden;pointer-events:none;
+    backdrop-filter:blur(8px);
+    transition:opacity .26s cubic-bezier(.22,1,.36,1),visibility .26s ease;
+  }
+  .dialog-backdrop.visible{
+    opacity:1;visibility:visible;pointer-events:auto;
+  }
+  .dialog{
+    width:100%;max-width:520px;
+    background:var(--canvas);
+    border-radius:18px;
+    box-shadow:0 15px 45px rgba(0,0,0,0.18);
+    padding:20px;
+    opacity:0;transform:translateY(10px);
+    transition:opacity .26s cubic-bezier(.22,1,.36,1),transform .26s cubic-bezier(.22,1,.36,1);
+  }
+  .dialog-backdrop.visible .dialog{
+    opacity:1;transform:translateY(0);
+  }
+  .dialog-title{
+    font-size:18px;font-weight:700;margin-bottom:10px;color:var(--ink);
+  }
+  .dialog-message{
+    font-size:15px;color:var(--ink-soft);line-height:1.6;white-space:pre-wrap;margin-bottom:18px;
+  }
+  .dialog-actions{
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  }
+  .loader-overlay{
+    position:fixed;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,0.78);
+    backdrop-filter:blur(10px);
+    z-index:650;
+    opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .22s ease,visibility .22s ease;
+  }
+  .loader-overlay.visible{
+    opacity:1;visibility:visible;pointer-events:auto;
+  }
+  .spinner{
+    width:42px;height:42px;
+    border:5px solid rgba(2,74,216,0.18);
+    border-top-color:var(--primary);
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .fab-back{
+    position:fixed;right:18px;bottom:20px;
+    width:52px;height:52px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,0.18);
+    background:var(--ink);color:var(--on-primary);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 12px 28px rgba(0,0,0,0.22);
+    cursor:pointer;z-index:700;
+  }
+  .fab-back:active{transform:translateY(1px);}
+  .fab-back svg{width:24px;height:24px;}
+  .icon-btn, .status-btn, .topbar, .fs-menu-list a, .btn-primary, .btn-danger, .btn-secondary, .fab-back{transition:background .22s ease,color .22s ease,transform .22s ease,box-shadow .22s ease;}
+  .burger-line{
+    display:block;position:absolute;left:10px;right:10px;height:2px;
+    background:currentColor;border-radius:999px;
+    transition:transform .26s cubic-bezier(.22,1,.36,1),opacity .16s ease;
+  }
+  .burger-line.top{top:12px;}
+  .burger-line.middle{top:20px;}
+  .burger-line.bottom{top:28px;}
+  .hamburger{position:relative;width:44px;height:44px;}
+  .hamburger.open .burger-line.top{transform:translateY(8px) rotate(45deg);}
+  .hamburger.open .burger-line.middle{opacity:0;}
+  .hamburger.open .burger-line.bottom{transform:translateY(-8px) rotate(-45deg);}
+  .icon-btn:hover, .btn-secondary:hover, .btn-danger:hover, .fab-back:hover{background:rgba(0,0,0,0.04);}
+  .btn-primary:hover{background:var(--primary-deep);}
+  .fs-menu-list a:hover{background:rgba(2,74,216,0.08);border-radius:10px;}
+  .hidden{display:none !important;}
+</style>
+</head>
+<body>
+
+<!-- Top banner -->
+<div class="topbar">
+  <div class="left">
+    <button class="icon-btn hamburger" id="hamburgerBtn" title="選單" aria-label="選單">
+      <span class="burger-line top"></span>
+      <span class="burger-line middle"></span>
+      <span class="burger-line bottom"></span>
+    </button>
+    <span class="title" id="pageTitle">我的收藏庫</span>
+  </div>
+  <div class="right" id="topbarRight">
+    <button class="icon-btn" id="addBtn" title="新增" aria-label="新增">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- Fullscreen menu -->
+<div class="fs-menu" id="fsMenu">
+  <div class="fs-menu-top">
+    <button class="icon-btn" id="closeMenuBtn" aria-label="關閉">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="fs-menu-list">
+    <a href="#/" data-route="/">首頁</a>
+    <a href="#/all" data-route="/all">所有</a>
+    <a href="#/planned" data-route="/planned">待觀看</a>
+    <a href="#/watching" data-route="/watching">正在觀看</a>
+    <a href="#/watched" data-route="/watched">已觀看</a>
+  </div>
+</div>
+
+<!-- App content -->
+<div class="page" id="app"></div>
+<div class="loader-overlay hidden" id="loader" aria-hidden="true">
+  <div class="spinner"></div>
+</div>
+<button class="fab-back" id="backFab" type="button" aria-label="返回上一頁" title="返回上一頁">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dialog-backdrop" id="confirmDialog" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="dialog">
+    <div class="dialog-title" id="dialogTitle"></div>
+    <div class="dialog-message" id="dialogMessage"></div>
+    <div class="dialog-actions">
+      <button class="btn-secondary hidden" id="cancelDialogBtn" type="button">取消</button>
+      <button class="btn-primary" id="confirmDialogBtn" type="button">前往外部網站</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const STORE_KEY = 'ruixue_collection_v1';
+  const STATUS = { WATCHING:'watching', PLANNED:'planned', WATCHED:'watched' };
+  const STATUS_LABEL = { watching:'觀看中', planned:'待觀看', watched:'已看完' };
+
+  function loadData(){
+    try{
+      const raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }catch(e){ return []; }
+  }
+  function saveData(data){
+    localStorage.setItem(STORE_KEY, JSON.stringify(data));
+  }
+  let items = loadData();
+
+  function uid(){ return 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+  // ---------- DOM refs ----------
+  const app = document.getElementById('app');
+  const pageTitle = document.getElementById('pageTitle');
+  const topbarRight = document.getElementById('topbarRight');
+  const addBtn = document.getElementById('addBtn');
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const closeMenuBtn = document.getElementById('closeMenuBtn');
+  const fsMenu = document.getElementById('fsMenu');
+
+  hamburgerBtn.addEventListener('click', ()=>{
+    fsMenu.classList.add('open');
+    hamburgerBtn.classList.add('open');
+  });
+  closeMenuBtn.addEventListener('click', ()=>{
+    fsMenu.classList.remove('open');
+    hamburgerBtn.classList.remove('open');
+  });
+  fsMenu.querySelectorAll('a').forEach(a=>{
+    a.addEventListener('click', ()=>{
+      fsMenu.classList.remove('open');
+      hamburgerBtn.classList.remove('open');
+      isBackNavigation = false;
+    });
+  });
+  addBtn.addEventListener('click', ()=>{ isBackNavigation = false; location.hash = '#/add'; });
+
+  function escapeHtml(str){
+    return (str||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function coverStyle(item){
+    if(item.image){
+      return `style="background-image:url('${escapeHtml(item.image)}')"`;
+    }
+    return '';
+  }
+
+  function cardHtml(item){
+    const epi = item.episode ? `第 ${escapeHtml(item.episode)} 集` : '';
+    const safeLink = escapeHtml(item.link || '');
+    const linkButton = item.link ? `<button class="link-btn" onclick="event.stopPropagation(); handleLinkClick(event, '${item.id}')">外部連結</button>` : '';
+    return `
+      <div class="card" onclick="window.handleCardNavigation('${item.id}')" data-link="${safeLink}">
+        <div class="cover" ${coverStyle(item)}>${item.image ? '' : '無封面'}</div>
+        <div class="info">
+          <div class="name">${escapeHtml(item.name) || '（未命名）'}</div>
+          <div class="meta">
+            <span class="cat-pill">${escapeHtml(item.category)||'未分類'}</span>
+            <span>${epi}</span>
+            ${linkButton}
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function gridOrEmpty(list, emptyText){
+    if(!list.length) return `<div class="empty-hint">${emptyText}</div>`;
+    return `<div class="grid">${list.map(cardHtml).join('')}</div>`;
+  }
+
+  window.handleCardNavigation = function(id){
+    isBackNavigation = false;
+    location.hash = '#/item/' + id;
+  };
+
+  function animatePage(){
+    // placeholder for page render transitions if needed
+  }
+
+  // ---------- Routes ----------
+  function renderHome(){
+    pageTitle.textContent = '我的收藏庫';
+    setTopbarDefault();
+    const watching = items.filter(i=>i.status===STATUS.WATCHING);
+    const planned = items.filter(i=>i.status===STATUS.PLANNED);
+    app.innerHTML = `
+      <div class="section-title">觀看中<span class="count">${watching.length}</span></div>
+      ${gridOrEmpty(watching, '目前沒有正在觀看的作品，點右上角「＋」新增一個吧')}
+      <div class="section-title" style="margin-top:32px;">待觀看<span class="count">${planned.length}</span></div>
+      ${gridOrEmpty(planned, '目前沒有待觀看的作品')}
+    `;
+  }
+
+  function renderList(status, title){
+    pageTitle.textContent = title;
+    setTopbarDefault();
+    const list = status ? items.filter(i=>i.status===status) : items;
+    app.innerHTML = `
+      <div class="section-title">${title}<span class="count">${list.length}</span></div>
+      ${gridOrEmpty(list, '目前沒有項目')}
+    `;
+  }
+
+  function setTopbarDefault(){
+    topbarRight.innerHTML = `
+      <button class="icon-btn" id="addBtn2" title="新增" aria-label="新增">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>`;
+    document.getElementById('addBtn2').addEventListener('click', ()=>{ isBackNavigation = false; location.hash='#/add'; });
+  }
+
+  function renderAdd(){
+    pageTitle.textContent = '新增';
+    topbarRight.innerHTML = '';
+    app.innerHTML = `
+      <div class="form-wrap">
+        <div class="field">
+          <label for="f-name">名稱</label>
+          <input id="f-name" type="text" placeholder="作品名稱">
+        </div>
+        <div class="field">
+          <label for="f-link">連結</label>
+          <input id="f-link" type="text" placeholder="https://... 或 image/xxx.jpg">
+        </div>
+        <div class="field">
+          <label for="f-image">封面圖片路徑（選填，圖片放在 image 資料夾）</label>
+          <input id="f-image" type="text" placeholder="image/example.jpg">
+        </div>
+        <div class="field">
+          <label for="f-cat">類別</label>
+          <select id="f-cat">
+            <option value="動畫">動畫</option>
+            <option value="影片">影片</option>
+            <option value="小說">小說</option>
+            <option value="漫畫">漫畫</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-epi">看到第幾集</label>
+          <input id="f-epi" type="text" placeholder="例如：12">
+        </div>
+        <div class="field">
+          <label for="f-status">狀態</label>
+          <select id="f-status">
+            <option value="planned">待觀看</option>
+            <option value="watching">觀看中</option>
+            <option value="watched">已看完</option>
+          </select>
+        </div>
+        <button class="btn-primary" id="saveNewBtn">儲存</button>
+      </div>
+    `;
+    document.getElementById('saveNewBtn').addEventListener('click', ()=>{
+      const name = document.getElementById('f-name').value.trim();
+      if(!name){ alert('請輸入名稱'); return; }
+      const newItem = {
+        id: uid(),
+        name,
+        link: document.getElementById('f-link').value.trim(),
+        image: document.getElementById('f-image').value.trim(),
+        category: document.getElementById('f-cat').value,
+        episode: document.getElementById('f-epi').value.trim(),
+        status: document.getElementById('f-status').value
+      };
+      items.push(newItem);
+      saveData(items);
+      location.hash = '#/';
+    });
+    animatePage();
+  }
+
+  function renderItem(id){
+    const item = items.find(i=>i.id===id);
+    if(!item){ location.hash = '#/'; return; }
+    pageTitle.textContent = '編輯';
+    topbarRight.innerHTML = `
+      <div class="status-actions">
+        <button class="status-btn" data-s="watched">看完</button>
+        <button class="status-btn" data-s="watching">觀看中</button>
+        <button class="status-btn" data-s="planned">待觀看</button>
+      </div>`;
+    topbarRight.querySelectorAll('.status-btn').forEach(btn=>{
+      if(btn.dataset.s === item.status) btn.classList.add('active');
+      btn.addEventListener('click', ()=>{
+        item.status = btn.dataset.s;
+        saveData(items);
+        renderItem(id);
+      });
+    });
+
+    app.innerHTML = `
+      <div class="form-wrap">
+        <div class="field">
+          <label for="f-name">名稱</label>
+          <input id="f-name" type="text" value="${escapeHtml(item.name)}">
+        </div>
+        <div class="field">
+          <label for="f-link">連結</label>
+          <input id="f-link" type="text" value="${escapeHtml(item.link)}">
+        </div>
+        <div class="field">
+          <label for="f-image">封面圖片路徑（image 資料夾）</label>
+          <input id="f-image" type="text" value="${escapeHtml(item.image||'')}">
+        </div>
+        <div class="field">
+          <label for="f-cat">類別</label>
+          <select id="f-cat">
+            <option value="動畫" ${item.category==='動畫' ? 'selected' : ''}>動畫</option>
+            <option value="影片" ${item.category==='影片' ? 'selected' : ''}>影片</option>
+            <option value="小說" ${item.category==='小說' ? 'selected' : ''}>小說</option>
+            <option value="漫畫" ${item.category==='漫畫' ? 'selected' : ''}>漫畫</option>
+            <option value="${escapeHtml(item.category||'')}" ${item.category && !['動畫','影片','小說','漫畫'].includes(item.category) ? 'selected' : ''}>${escapeHtml(item.category||'其他')}</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-epi">看到第幾集</label>
+          <input id="f-epi" type="text" value="${escapeHtml(item.episode)}">
+        </div>
+        <button class="btn-primary" id="saveBtn">儲存</button>
+        <button class="btn-danger" id="delBtn">刪除</button>
+      </div>
+    `;
+    document.getElementById('saveBtn').addEventListener('click', ()=>{
+      item.name = document.getElementById('f-name').value.trim();
+      item.link = document.getElementById('f-link').value.trim();
+      item.image = document.getElementById('f-image').value.trim();
+      item.category = document.getElementById('f-cat').value;
+      item.episode = document.getElementById('f-epi').value.trim();
+      saveData(items);
+      location.hash = '#/';
+    });
+    document.getElementById('delBtn').addEventListener('click', ()=>{
+      if(confirm('確定要刪除這個項目嗎？')){
+        items = items.filter(i=>i.id!==id);
+        saveData(items);
+        location.hash = '#/';
+      }
+    });
+  }
+
+  let isBackNavigation = false;
+  const loader = document.getElementById('loader');
+
+  function setLoader(show){
+    loader.classList.toggle('visible', show);
+    loader.classList.toggle('hidden', !show);
+    loader.setAttribute('aria-hidden', show ? 'false' : 'true');
+  }
+
+  function transitionRender(renderFn){
+    const outDirection = isBackNavigation ? 'right' : 'left';
+    const inDirection = isBackNavigation ? 'left' : 'right';
+    app.classList.remove('slide-in-left','slide-in-right','slide-out-left','slide-out-right','active');
+    app.classList.add(`slide-out-${outDirection}`);
+    setLoader(true);
+    window.setTimeout(()=>{
+      app.classList.remove(`slide-out-${outDirection}`);
+      renderFn();
+      app.classList.add(`slide-in-${inDirection}`);
+      requestAnimationFrame(()=>{
+        app.classList.add('active');
+      });
+      setTimeout(()=>{ setLoader(false); }, 220);
+      isBackNavigation = false;
+    }, 160);
+  }
+
+  function router(){
+    const hash = location.hash.replace(/^#/, '') || '/';
+    if(hash === '/' ){
+      transitionRender(renderHome);
+    } else if(hash === '/all'){
+      transitionRender(()=>renderList(null, '所有'));
+    } else if(hash === '/planned'){
+      transitionRender(()=>renderList(STATUS.PLANNED, '待觀看'));
+    } else if(hash === '/watching'){
+      transitionRender(()=>renderList(STATUS.WATCHING, '正在觀看'));
+    } else if(hash === '/watched'){
+      transitionRender(()=>renderList(STATUS.WATCHED, '已觀看'));
+    } else if(hash === '/add'){
+      transitionRender(renderAdd);
+    } else if(hash.startsWith('/item/')){
+      transitionRender(()=>renderItem(hash.replace('/item/','')));
+    } else {
+      transitionRender(renderHome);
+    }
+    // highlight current menu link
+    fsMenu.querySelectorAll('a').forEach(a=>{
+      a.classList.toggle('current', ('/'+a.dataset.route).replace('//','/') === ('/'+hash).replace('//','/') || a.dataset.route === hash);
+    });
+  }
+
+  const confirmDialog = document.getElementById('confirmDialog');
+  const dialogTitle = document.getElementById('dialogTitle');
+  const dialogMessage = document.getElementById('dialogMessage');
+  const cancelDialogBtn = document.getElementById('cancelDialogBtn');
+  const confirmDialogBtn = document.getElementById('confirmDialogBtn');
+  let dialogTargetLink = '';
+
+  function openExternalLink(link){
+    if(!link) return;
+    const normalized = link.trim();
+    if(normalized.startsWith('http://') || normalized.startsWith('https://')){
+      location.href = normalized;
+    } else {
+      location.href = normalized;
+    }
+  }
+
+  function showConfirmDialog(link, name){
+    dialogTargetLink = link;
+    dialogTitle.textContent = '即將前往外部網站';
+    dialogMessage.textContent = `您要前往：\n${link}\n\n${name ? '項目：' + name : ''}`;
+    cancelDialogBtn.classList.remove('hidden');
+    confirmDialogBtn.textContent = '前往外部網站';
+    confirmDialog.classList.add('visible');
+    confirmDialog.setAttribute('aria-hidden', 'false');
+  }
+
+  function hideConfirmDialog(){
+    dialogTargetLink = '';
+    confirmDialog.classList.remove('visible');
+    confirmDialog.setAttribute('aria-hidden', 'true');
+  }
+
+  cancelDialogBtn.addEventListener('click', hideConfirmDialog);
+  confirmDialog.addEventListener('click', (event)=>{
+    if(event.target === confirmDialog){
+      hideConfirmDialog();
+    }
+  });
+  confirmDialogBtn.addEventListener('click', ()=>{
+    const target = dialogTargetLink;
+    hideConfirmDialog();
+    openExternalLink(target);
+  });
+
+  const backFab = document.getElementById('backFab');
+  backFab.addEventListener('click', ()=>{
+    if(window.history.length > 1){
+      isBackNavigation = true;
+      window.history.back();
+    } else {
+      isBackNavigation = true;
+      location.hash = '#/';
+    }
+  });
+
+  window.handleLinkClick = function(event, id){
+    event.preventDefault();
+    const item = items.find(i=>i.id===id);
+    if(!item || !item.link){ return; }
+    showConfirmDialog(item.link, item.name);
+  };
+
+  window.addEventListener('hashchange', router);
+  window.addEventListener('DOMContentLoaded', router);
+  router();
+})();
+</script>
+</body>
+</html>
