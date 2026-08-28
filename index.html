@@ -5,6 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ruixue</title>
+    <meta name="description" content="Ruixue 個人網站，分享 AI、程式設計、Discord 機器人、數位創作與生活紀錄，包含作品、設備與社群連結。">
+    <meta name="keywords" content="Ruixue, AI, 程式設計, Discord機器人, 生活分享, 網站, 個人部落格, 自我介紹">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="author" content="Ruixue">
+    <meta name="theme-color" content="#FF85B3">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Ruixue">
+    <meta property="og:description" content="Ruixue 個人網站，分享 AI、程式設計、Discord 機器人、數位創作與生活紀錄。">
+    <meta property="og:url" content="https://ruixue.cc.cd/">
+    <meta property="og:image" content="https://ruixue.cc.cd/%E7%84%A1%E6%A8%99%E9%A1%8C276_20250929171625.png">
+    <meta property="og:site_name" content="Ruixue">
+    <meta property="og:locale" content="zh_TW">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ruixue | AI、程式設計與生活分享">
+    <meta name="twitter:description" content="Ruixue 個人網站，分享 AI、程式設計、Discord 機器人、數位創作與生活紀錄。">
+    <meta name="twitter:image" content="https://ruixue.cc.cd/%E7%84%A1%E6%A8%99%E9%A1%8C276_20250929171625.png">
+    <link rel="canonical" href="https://ruixue.cc.cd/">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -542,16 +559,18 @@
         <div class="loading-text">Loading Ruixue's site...</div>
     </div>
 
-    <nav>
-        <div class="logo">Ruixue</div>
-        <div class="nav-tabs">
-            <div class="nav-glider"></div>
-            <a href="javascript:void(0)" class="tab active" onclick="showPage('home', this)">首頁</a>
-            <a href="javascript:void(0)" class="tab" onclick="showPage('links', this)">連結</a>
-            <a href="javascript:void(0)" class="tab" onclick="showPage('blog-list', this)">文章</a>
-            <a href="javascript:void(0)" class="tab" onclick="showPage('equipment', this)">設備</a>
-        </div>
-    </nav>
+    <header>
+        <nav aria-label="網站導覽">
+            <div class="logo">Ruixue</div>
+            <div class="nav-tabs" role="tablist" aria-label="頁面導覽">
+                <div class="nav-glider"></div>
+                <a href="javascript:void(0)" class="tab active" onclick="showPage('home', this)" aria-current="page">首頁</a>
+                <a href="javascript:void(0)" class="tab" onclick="showPage('links', this)">連結</a>
+                <a href="javascript:void(0)" class="tab" onclick="showPage('blog-list', this)">文章</a>
+                <a href="javascript:void(0)" class="tab" onclick="showPage('equipment', this)">設備</a>
+            </div>
+        </nav>
+    </header>
 
     <div id="page-home" class="page active">
         <!-- From Uiverse.io by mihocsaszilard -->
@@ -849,6 +868,30 @@
             ©2026 Ruixue<br>https://ruixue.cc.cd
         </div>
     </footer>
+
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "name": "Ruixue",
+          "url": "https://ruixue.cc.cd/",
+          "description": "Ruixue 個人網站，分享 AI、程式設計、Discord 機器人、數位創作與生活紀錄。",
+          "image": "https://ruixue.cc.cd/%E7%84%A1%E6%A8%99%E9%A1%8C276_20250929171625.png",
+          "sameAs": [
+            "https://github.com/Ruixue9626",
+            "https://www.threads.com/@ruixue.9626",
+            "https://discord.gg/mqfKKmQ4Tt"
+          ],
+          "knowsAbout": [
+            "AI",
+            "Python",
+            "HTML",
+            "Discord Bot",
+            "Web Development",
+            "Digital Creation"
+          ]
+        }
+    </script>
 
     <script>
         // --- Loading Screen 邏輯：確保動畫至少完整播放一輪(4秒) ---
