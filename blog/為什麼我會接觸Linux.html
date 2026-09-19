@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/Ruixue9626/Ruixue/10a80f770edb24873f3ec6e7a46a275d1209381e/%E7%84%A1%E6%A8%99%E9%A1%8C276_20250929171625.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruixue | 為什麼我會接觸Linux</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pure-black: #000000;
+            --pure-white: #ffffff;
+            --primary-pink: #FF85B3;
+            --soft-pink: #FFF0F6;
+            --glass-dark: rgba(255, 133, 179, 0.1);
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--pure-white);
+            color: var(--pure-black);
+            font-family: var(--font-main);
+            line-height: 1.6;
+        }
+
+        nav {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 48px;
+            background: var(--pure-white);
+            border-bottom: 1px solid var(--glass-dark);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 20px;
+            text-decoration: none;
+            color: var(--pure-black);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.54px;
+            color: var(--primary-pink);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .post-date {
+            font-size: 16px;
+            color: rgba(0,0,0,0.5);
+            margin-bottom: 48px;
+        }
+
+        .post-content {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .post-content p {
+            margin-bottom: 24px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 60px;
+            color: var(--primary-pink);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: var(--pure-white);
+            padding: 60px 48px;
+            text-align: center;
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">Ruixue</a>
+    </nav>
+
+    <article class="container">
+        <span class="section-label">Blog Post</span>
+        <h1>為什麼我會接觸Linux</h1>
+        <div class="post-date">發布日期：2026 年 9 月 20 日</div>
+        
+        <div class="post-content">
+            <br>我大概在26年到一月把自己的主力機刷上了Linux,到現在也用超過半年了，這段期間我學到了很多，也有些想法上的改變。
+            <br>
+            <br>為什麼我要用Linux?
+            <br>    因為我的電腦大概是國小5年級時候買的，到現在也五年多了，大概在國二時吧，看到Windows 10未來要停止支援就把電腦用成了Win 11，用了快要半年吧？越用越不順，記憶體一開機就佔了快要7GB，我電腦是我爸買的，那時我不懂，他可能也不懂就選了最基本的8GB，跑Win 10可能還夠用，但是我那時就急了就給它搞成了Win 11，用了半年多吧，在社群網站看到Linux相關的東西，就開始著手研究，從一開始的選擇發行版，到虛擬機實操，因為我只有那台電腦，所以還有在虛擬機裡試試看，熟練了才對自己的電腦動手，那時候裝自己電腦的時候還裝錯硬碟，不小心裝在HDD上導致它跑得很慢，後來又重裝第二次，才裝到正確的SSD硬碟上。
+            <br>
+            <br>我為什麼會接觸到Linux?
+            <br>    我第一次接觸到Linux是在國二時吧，那時候看到Android Studio，它的網站上面有在線體驗，它就是一台Ubuntu Linux雲端虛擬機，那時候才了解，Linux不是個只有文字沒有桌面環境的系統，讓我對Linux徹底改觀，那時就玩它的虛擬機玩上癮了，但好景不長，它們似乎停用了這個東西，所以也沒有玩很久，大概就玩了幾個月吧。 當自己要把系統換成Linux時，也是毫不猶豫地選擇了Ubuntu，因為有用過比較熟，再加上網路上都推薦新手用它，而且是市佔率最高的Linux發行版，當遇到問題也比較好處理。
+            <br>
+            <br>在Linux遇到的一些問題和趣事
+            <br>   我用到現在遇到最大的問題，大概就是內核崩潰吧。那時還不懂，看到更新就給它更，搞到內核崩潰，現在看真的超好笑的。那天我剛好感冒請假在家，想說用一下電腦，結果內核崩潰，那時頭痛得要死，根本沒辦法冷靜地處理。是到隔天，病情好了一點，才想到我把grub 關掉了，所以我沒辦法用它切回去舊的內核，真的很慶幸自己是在一個有AI的時代，不然我可能就要重灌了，那次有救回來，後來就沒有發生什麼大問題了，只剩下適應的問題了， 在Win切換語言是shift但在Linux是super+space這個我適應比較久，現在也已經適應了，Linux有趣的點就是什麼都可以自己來，像是你太無聊了，可以幫視窗加上果凍效果，超有趣的！還可以對整台電腦改東改西，需要什麼就裝什麼，可以把電腦改成Mac的樣子也可以改成十幾年前的UI設計風格。
+            <br>
+            <br>心得： 
+            <br>不得不說Linux真的是個好東西，可以改變一個人的想法，舉例來說，以前用Win時電腦出問題就會去怪電腦、怪系統，但是換成Linux後開始回去想想是不是我那個地方用錯了，才會發生這種事，開始反思自己的操作，而不是一味地怪電腦、怪系統，雖然電腦真的很爛，但是我還是要感謝我爸，假如沒有他給我這台爛電腦，我不可能去研究Linux，不可能有現在的成就，俗話說強者從不抱怨環境，這句話講的我覺得有點正確，以前在國中，我的電腦算是很爛的了，但是我是班上最會用電腦的人，我的電腦雖然玩Roblox都會卡，但是它卻練出了一個對電腦精通的人，我對Linux的探索還在繼續，這段時間我嘗試了很多不同的應用程式和工具，從編程到數據分析，甚至還學會了一些基本的命令行操作。這些經歷讓我對Linux的理解更加深入，也讓我對未來的學習充滿期待。
+總的來說，Linux不僅僅是一個操作系統，它讓我重新思考了自己的學習方式和思維模式。我期待在未來的日子裡，繼續深入這個東西，發掘更多的可能性。
+
+        </div>
+
+        <a href="../index.html" class="back-link">← 返回首頁</a>
+    </article>
+
+    <footer>
+        <div style="font-family: 'JetBrains Mono'; font-size: 12px; opacity: 0.6;">
+            ©2026 Ruixue | https://ruixue.cc.cd
+        </div>
+    </footer>
+</body>
+</html>
