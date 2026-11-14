@@ -61,6 +61,10 @@
         }
 
         /* --- Navigation --- */
+        header {
+            height: 80px;
+        }
+
         nav {
             height: 80px;
             display: flex;
@@ -69,8 +73,10 @@
             padding: 0 48px;
             background: var(--pure-white);
             border-bottom: 1px solid var(--glass-dark);
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 100;
         }
 
@@ -156,19 +162,122 @@
             opacity: 0.9;
         }
 
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
         .btn-pill-white {
             background: var(--pure-white);
             color: var(--pure-black);
-            padding: 12px 24px 14px;
+            padding: 12px 16px 14px;
+            min-height: 56px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 540;
             font-size: 18px;
-            transition: transform 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .btn-pill-white:hover {
-            transform: scale(1.05);
+        #heroLetsGo {
+            position: relative;
+            z-index: 1;
+            isolation: isolate;
+            overflow: visible;
+            background: var(--pure-white);
+            transition: color 0.3s ease;
+        }
+
+        #heroLetsGo:hover {
+            color: var(--pure-white);
+            background: linear-gradient(
+                90deg,
+                #03a9f4,
+                #ffeb3b,
+                #f441af,
+                #03a9f4
+            );
+            background-size: 400%;
+            animation: heroLetsGoGradient 6s linear infinite;
+        }
+
+        #heroLetsGo::before {
+            content: "";
+            position: absolute;
+            inset: -5px;
+            z-index: -1;
+            border-radius: 40px;
+            background: linear-gradient(
+                90deg,
+                #03a9f4,
+                #ffeb3b,
+                #f441af,
+                #03a9f4
+            );
+            background-size: 400%;
+            filter: blur(20px);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #heroLetsGo:hover::before {
+            opacity: 1;
+            animation: heroLetsGoGradient 6s linear infinite;
+        }
+
+        @keyframes heroLetsGoGradient {
+            0% { background-position: 0%; }
+            100% { background-position: 400%; }
+        }
+
+        .social-icon {
+            width: 24px;
+            height: 24px;
+            display: block;
+        }
+
+        .social-link {
+            width: 56px;
+            height: 56px;
+            padding: 0;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            transition-duration: 0.3s;
+        }
+
+        .social-link::before {
+            position: absolute;
+            bottom: -20px;
+            content: attr(data-label);
+            color: var(--pure-white);
+            font-size: 0;
+        }
+
+        .social-link:hover {
+            width: 140px;
+            border-radius: 50px;
+            background-color: var(--primary-pink);
+            transition-duration: 0.3s;
+        }
+
+        .social-link:hover .social-icon {
+            transition-duration: 0.3s;
+            transform: translateY(-200%);
+        }
+
+        .social-link:hover::before {
+            font-size: 13px;
+            opacity: 1;
+            bottom: unset;
+            transition-duration: 0.3s;
         }
 
         /* --- Multi-page Logic --- */
@@ -229,16 +338,9 @@
             border: 1px solid var(--glass-dark);
             padding: 24px;
             border-radius: 16px;
-            transition: all 0.3s ease;
             text-decoration: none;
             color: inherit;
             display: block;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(255,133,179,0.2);
-            background: var(--pure-white);
         }
 
         .card h3 {
@@ -306,11 +408,238 @@
             justify-content: center;
             color: var(--pure-white);
             text-decoration: none;
-            transition: background 0.2s;
+            overflow: hidden;
+            position: relative;
+            transition-duration: 0.3s;
         }
 
         .btn-circle:hover {
+            width: 140px;
+            border-radius: 50px;
             background: var(--primary-pink);
+            transition-duration: 0.3s;
+        }
+
+        .btn-circle::before {
+            position: absolute;
+            bottom: -20px;
+            content: attr(data-label);
+            color: white;
+            font-size: 0;
+        }
+
+        .btn-circle:hover .social-icon {
+            transition-duration: 0.3s;
+            transform: translateY(-200%);
+        }
+
+        .btn-circle:hover::before {
+            font-size: 13px;
+            opacity: 1;
+            bottom: unset;
+            transition-duration: 0.3s;
+        }
+
+        .back-to-top {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: rgb(20, 20, 20);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 90;
+            transition: width 0.3s ease, border-radius 0.3s ease,
+                background-color 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .back-to-top.animation-hidden {
+            opacity: 0 !important;
+            pointer-events: none;
+        }
+
+        .back-to-top-fly {
+            opacity: 1 !important;
+            pointer-events: none !important;
+            transition: none !important;
+            margin: 0;
+            position: fixed !important;
+            display: flex !important;
+            z-index: 1000 !important;
+        }
+
+        .back-to-top-fly::before {
+            display: none !important;
+            content: "" !important;
+        }
+
+        .back-to-top-fly:hover {
+            width: var(--fly-width) !important;
+            border-radius: var(--fly-radius) !important;
+            background-color: var(--fly-background) !important;
+        }
+
+        .back-to-top-fly:hover::before {
+            display: none !important;
+            content: "" !important;
+        }
+
+        .back-to-top-fly .fly-label {
+            position: absolute;
+            white-space: nowrap;
+            font: inherit;
+            font-weight: inherit;
+            letter-spacing: inherit;
+            color: var(--pure-black);
+            pointer-events: none;
+        }
+
+        .hero-lets-go-hidden {
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .back-to-top .svg-icon {
+            width: 12px;
+            transition-duration: 0.3s;
+        }
+
+        .back-to-top .svg-icon path {
+            fill: white;
+        }
+
+        .back-to-top::before {
+            position: absolute;
+            bottom: -20px;
+            content: "Back to Top";
+            color: white;
+            font-size: 0;
+        }
+
+        .back-to-top:hover {
+            width: 140px;
+            border-radius: 50px;
+            background-color: var(--primary-pink);
+            transition-duration: 0.3s;
+        }
+
+        .back-to-top:hover .svg-icon {
+            transition-duration: 0.3s;
+            transform: translateY(-200%);
+        }
+
+        .back-to-top:hover::before {
+            font-size: 13px;
+            opacity: 1;
+            bottom: unset;
+            transition-duration: 0.3s;
+        }
+
+        .floating-socials {
+            position: fixed;
+            right: 24px;
+            bottom: 86px;
+            z-index: 90;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: flex-end;
+            gap: 10px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(42px);
+            transform-origin: bottom right;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .floating-socials.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .floating-social {
+            width: 50px;
+            height: 50px;
+            padding: 0;
+            border: none;
+            border-radius: 50%;
+            background-color: rgb(20, 20, 20);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: pointer;
+            text-decoration: none;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            transition: height 0.3s ease, border-radius 0.3s ease,
+                background-color 0.3s ease;
+        }
+
+        .floating-social-slot {
+            width: 140px;
+            height: 50px;
+            flex: 0 0 50px;
+            position: relative;
+            transition: flex-basis 0.3s ease;
+        }
+
+        .floating-social-slot.expanded {
+            flex-basis: 140px;
+        }
+
+        .floating-social::before {
+            position: absolute;
+            right: 50%;
+            top: 40px;
+            content: attr(data-label);
+            color: white;
+            font-size: 0;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(50%) rotate(-90deg);
+            transform-origin: center;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .floating-social .social-icon {
+            width: 18px;
+            height: 18px;
+            position: absolute;
+            right: 50%;
+            bottom: 16px;
+            transform: translateX(50%);
+            transition: transform 0.3s ease;
+        }
+
+        .floating-social-slot.expanded .floating-social {
+            height: 140px;
+            border-radius: 50px;
+            background-color: var(--primary-pink);
+            z-index: 2;
+        }
+
+        .floating-social-slot.expanded .social-icon {
+            transform: translateX(50%);
+        }
+
+        .floating-social-slot.expanded .floating-social::before {
+            font-size: 13px;
+            opacity: 1;
         }
 
         @media (max-width: 768px) {
@@ -321,6 +650,10 @@
             .tab { padding: 6px 10px; font-size: 12px; }
             .container { padding: 40px 24px; }
             .hero { padding: 80px 24px; }
+            .floating-socials {
+                right: 16px;
+                bottom: 86px;
+            }
         }
 
         /* --- Loading Screen --- */
@@ -577,10 +910,24 @@
         <div class="hero">
             <h1 class="reveal">Ruixue's web site</h1>
             <p>太驚訝了！你居然找到了這個網站！</p>
-            <a href="javascript:void(0)" class="btn-pill-white reveal"
-               onclick="document.getElementById('about').scrollIntoView({ behavior: 'smooth', block: 'start' })">
-                Let's Go!
-            </a>
+            <div class="hero-actions reveal">
+                <a href="javascript:void(0)" id="heroLetsGo" class="btn-pill-white"
+                   onclick="launchBackToTopTransition()">
+                    Let's Go!
+                </a>
+                <a href="https://www.threads.com/@ruixue.9626" target="_blank" rel="noopener noreferrer"
+                   class="btn-pill-white social-link" aria-label="前往 Ruixue 的 Threads" data-label="Threads">
+                    <img class="social-icon" src="https://cdn.simpleicons.org/threads/000000" alt="">
+                </a>
+                <a href="https://discord.gg/mqfKKmQ4Tt" target="_blank" rel="noopener noreferrer"
+                   class="btn-pill-white social-link" aria-label="加入 Ruixue 的 Discord" data-label="Discord">
+                    <img class="social-icon" src="https://cdn.simpleicons.org/discord/000000" alt="">
+                </a>
+                <a href="https://github.com/Ruixue9626" target="_blank" rel="noopener noreferrer"
+                   class="btn-pill-white social-link" aria-label="前往 Ruixue 的 GitHub" data-label="GitHub">
+                    <img class="social-icon" src="https://cdn.simpleicons.org/github/000000" alt="">
+                </a>
+            </div>
         </div>
 
         <main class="container">
@@ -864,15 +1211,55 @@
         <p style="font-size: 20px; font-weight: 340; margin-bottom: 24px;">聯絡我</p>
         
         <div class="circle-btns">
-            <a href="https://github.com/Ruixue9626" class="btn-circle" title="GitHub">GH</a>
-            <a href="https://discord.gg/mqfKKmQ4Tt" class="btn-circle" title="Discord">DC</a>
-            <a href="https://www.threads.com/@ruixue.9626" class="btn-circle" title="Threads">TH</a>
+            <a href="https://github.com/Ruixue9626" target="_blank" rel="noopener noreferrer"
+               class="btn-circle" title="GitHub" aria-label="前往 Ruixue 的 GitHub" data-label="GitHub">
+                <img class="social-icon" src="https://cdn.simpleicons.org/github/ffffff" alt="">
+            </a>
+            <a href="https://discord.gg/mqfKKmQ4Tt" target="_blank" rel="noopener noreferrer"
+               class="btn-circle" title="Discord" aria-label="加入 Ruixue 的 Discord" data-label="Discord">
+                <img class="social-icon" src="https://cdn.simpleicons.org/discord/ffffff" alt="">
+            </a>
+            <a href="https://www.threads.com/@ruixue.9626" target="_blank" rel="noopener noreferrer"
+               class="btn-circle" title="Threads" aria-label="前往 Ruixue 的 Threads" data-label="Threads">
+                <img class="social-icon" src="https://cdn.simpleicons.org/threads/ffffff" alt="">
+            </a>
         </div>
 
         <div style="margin-top: 60px;" class="footer-mono">
             ©2026 Ruixue<br>https://ruixue.cc.cd
         </div>
     </footer>
+
+    <button class="back-to-top" type="button" aria-label="返回頂部"
+            onclick="returnToTopAndRestoreLetsGo()">
+        <svg class="svg-icon" viewBox="0 0 384 512" aria-hidden="true">
+            <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"></path>
+        </svg>
+    </button>
+
+    <div class="floating-socials" aria-label="社群連結">
+        <div class="floating-social-slot">
+        <a class="floating-social" href="https://www.threads.com/@ruixue.9626"
+           target="_blank" rel="noopener noreferrer" data-label="Threads"
+           aria-label="前往 Ruixue 的 Threads">
+            <img class="social-icon" src="https://cdn.simpleicons.org/threads/ffffff" alt="">
+        </a>
+        </div>
+        <div class="floating-social-slot">
+        <a class="floating-social" href="https://discord.gg/mqfKKmQ4Tt"
+           target="_blank" rel="noopener noreferrer" data-label="Discord"
+           aria-label="加入 Ruixue 的 Discord">
+            <img class="social-icon" src="https://cdn.simpleicons.org/discord/ffffff" alt="">
+        </a>
+        </div>
+        <div class="floating-social-slot">
+        <a class="floating-social" href="https://github.com/Ruixue9626"
+           target="_blank" rel="noopener noreferrer" data-label="GitHub"
+           aria-label="前往 Ruixue 的 GitHub">
+            <img class="social-icon" src="https://cdn.simpleicons.org/github/ffffff" alt="">
+        </a>
+        </div>
+    </div>
 
     <script type="application/ld+json">
         {
@@ -965,6 +1352,359 @@
             }
         }
         window.addEventListener("scroll", reveal);
+
+        function updateBackToTop() {
+            const backToTop = document.querySelector('.back-to-top');
+            const floatingSocials = document.querySelector('.floating-socials');
+            const heroLetsGo = document.getElementById('heroLetsGo');
+            const transitionThreshold = 500;
+
+            if (isReturningToTop) {
+                floatingSocials.classList.remove('visible');
+                if (window.scrollY === 0) {
+                    isReturningToTop = false;
+                }
+            } else {
+                floatingSocials.classList.toggle('visible', window.scrollY > 0);
+            }
+
+            if (window.scrollY <= transitionThreshold && !backToTop.classList.contains('animation-hidden')) {
+                if (backToTop.classList.contains('visible')) {
+                    // The scroll-linked transition handles the animated return.
+                    // For a normal scroll, wait until the page is actually at
+                    // the top so both animation endpoints use viewport coordinates.
+                    if (window.scrollY === 0) {
+                        animateBackToLetsGo();
+                    }
+                } else {
+                    if (window.scrollY === 0) {
+                        backToTop.classList.remove('visible');
+                    }
+                }
+                return;
+            }
+
+            if (!backToTop.classList.contains('animation-hidden')) {
+                backToTop.classList.toggle('visible', window.scrollY > 0);
+            }
+        }
+
+        function launchBackToTopTransition() {
+            const source = document.getElementById('heroLetsGo');
+            const backToTop = document.querySelector('.back-to-top');
+            const sourceRect = source.getBoundingClientRect();
+            const targetRect = backToTop.getBoundingClientRect();
+            const flyingButton = backToTop.cloneNode(true);
+            const flyLabel = document.createElement('span');
+            flyLabel.className = 'fly-label';
+            flyLabel.textContent = "Let's Go!";
+            flyLabel.style.font = getComputedStyle(source).font;
+            flyLabel.style.fontWeight = getComputedStyle(source).fontWeight;
+            flyLabel.style.letterSpacing = getComputedStyle(source).letterSpacing;
+            flyLabel.style.color = getComputedStyle(source).color;
+
+            source.classList.add('hero-lets-go-hidden');
+            flyingButton.classList.remove('visible', 'animation-hidden');
+            flyingButton.classList.add('back-to-top-fly');
+            flyingButton.innerHTML = backToTop.innerHTML;
+            flyingButton.prepend(flyLabel);
+            flyingButton.style.backgroundColor = getComputedStyle(source).backgroundColor;
+            flyingButton.style.color = getComputedStyle(source).color;
+            flyingButton.style.left = `${sourceRect.left}px`;
+            flyingButton.style.top = `${sourceRect.top}px`;
+            flyingButton.style.width = `${sourceRect.width}px`;
+            flyingButton.style.height = `${sourceRect.height}px`;
+            flyingButton.style.right = 'auto';
+            flyingButton.style.bottom = 'auto';
+            flyingButton.style.visibility = 'visible';
+            document.body.appendChild(flyingButton);
+
+            backToTop.classList.add('visible', 'animation-hidden');
+            document.getElementById('about').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+
+            const animation = flyingButton.animate([
+                {
+                    left: `${sourceRect.left}px`,
+                    top: `${sourceRect.top}px`,
+                    width: `${sourceRect.width}px`,
+                    height: `${sourceRect.height}px`,
+                    borderRadius: getComputedStyle(source).borderRadius,
+                    transform: 'scale(1)',
+                    opacity: 1,
+                    backgroundColor: getComputedStyle(source).backgroundColor
+                },
+                {
+                    left: `${sourceRect.left + (targetRect.left - sourceRect.left) * 0.3}px`,
+                    top: `${Math.min(sourceRect.top, targetRect.top) - 48}px`,
+                    width: `${sourceRect.width * 0.92}px`,
+                    height: `${sourceRect.height * 0.92}px`,
+                    borderRadius: '40px',
+                    transform: 'scale(1.04)',
+                    opacity: 1,
+                    offset: 0.38
+                },
+                {
+                    left: `${targetRect.left - 10}px`,
+                    top: `${targetRect.top - 10}px`,
+                    width: `${targetRect.width + 20}px`,
+                    height: `${targetRect.height + 20}px`,
+                    borderRadius: '50%',
+                    transform: 'scale(0.94)',
+                    opacity: 1,
+                    offset: 0.78
+                },
+                {
+                    left: `${targetRect.left}px`,
+                    top: `${targetRect.top}px`,
+                    width: `${targetRect.width}px`,
+                    height: `${targetRect.height}px`,
+                    borderRadius: '50%',
+                    transform: 'scale(1)',
+                    opacity: 1,
+                    backgroundColor: 'rgb(20, 20, 20)'
+                }
+            ], {
+                duration: 1100,
+                easing: 'cubic-bezier(0.22, 1, 0.36, 1)'
+            });
+
+            flyLabel.animate([{ opacity: 1 }, { opacity: 0 }], {
+                duration: 450,
+                delay: 300,
+                fill: 'forwards',
+                easing: 'ease-out'
+            });
+            flyingButton.querySelector('.svg-icon').animate([{ opacity: 0 }, { opacity: 1 }], {
+                duration: 450,
+                delay: 450,
+                fill: 'forwards',
+                easing: 'ease-in'
+            });
+
+            animation.onfinish = () => {
+                flyingButton.remove();
+                backToTop.classList.remove('animation-hidden');
+                backToTop.classList.add('visible');
+            };
+        }
+
+        let scrollLinkedTransition = null;
+        let isReturningToTop = false;
+
+        function returnToTopAndRestoreLetsGo() {
+            const source = document.getElementById('heroLetsGo');
+            const backToTop = document.querySelector('.back-to-top');
+            const floatingSocials = document.querySelector('.floating-socials');
+
+            isReturningToTop = true;
+            floatingSocials.classList.remove('visible');
+            floatingSocials.querySelectorAll('.floating-social-slot').forEach(slot => {
+                slot.classList.remove('expanded');
+            });
+
+            if (!source.classList.contains('hero-lets-go-hidden')) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            const startRect = backToTop.getBoundingClientRect();
+            source.classList.add('hero-lets-go-hidden');
+            backToTop.classList.add('animation-hidden');
+
+            const flyingButton = backToTop.cloneNode(true);
+            const flyLabel = document.createElement('span');
+            flyLabel.className = 'fly-label';
+            flyLabel.textContent = "Let's Go!";
+            flyLabel.style.font = getComputedStyle(source).font;
+            flyLabel.style.fontWeight = getComputedStyle(source).fontWeight;
+            flyLabel.style.letterSpacing = getComputedStyle(source).letterSpacing;
+            flyLabel.style.color = getComputedStyle(source).color;
+            flyLabel.style.opacity = '0';
+            flyingButton.classList.remove('visible', 'animation-hidden');
+            flyingButton.classList.add('back-to-top-fly');
+            flyingButton.prepend(flyLabel);
+            flyingButton.querySelector('.svg-icon').style.opacity = '1';
+            flyingButton.style.left = `${startRect.left}px`;
+            flyingButton.style.top = `${startRect.top}px`;
+            flyingButton.style.width = `${startRect.width}px`;
+            flyingButton.style.height = `${startRect.height}px`;
+            flyingButton.style.right = 'auto';
+            flyingButton.style.bottom = 'auto';
+            flyingButton.style.visibility = 'visible';
+            document.body.appendChild(flyingButton);
+
+            scrollLinkedTransition = {
+                source,
+                backToTop,
+                flyingButton,
+                flyLabel,
+                startY: window.scrollY,
+                startRect,
+                targetRect: getHeroButtonAtTop(source)
+            };
+            updateScrollLinkedTransition();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateScrollLinkedTransition() {
+            if (!scrollLinkedTransition) {
+                return;
+            }
+
+            const {
+                source,
+                backToTop,
+                flyingButton,
+                flyLabel,
+                startY,
+                startRect,
+                targetRect
+            } = scrollLinkedTransition;
+            const progress = Math.min(1, Math.max(0, 1 - window.scrollY / startY));
+            const easedProgress = progress * progress * (3 - 2 * progress);
+            const arc = Math.sin(progress * Math.PI) * -48;
+            const left = startRect.left + (targetRect.left - startRect.left) * easedProgress;
+            const targetTop = targetRect.top - window.scrollY;
+            const top = startRect.top + (targetTop - startRect.top) * easedProgress + arc;
+            const width = startRect.width + (targetRect.width - startRect.width) * easedProgress;
+            const height = startRect.height + (targetRect.height - startRect.height) * easedProgress;
+            const startRadius = Math.min(startRect.width, startRect.height) / 2;
+            const targetRadius = Math.min(targetRect.width, targetRect.height) / 2;
+            const radius = startRadius + (targetRadius - startRadius) * easedProgress;
+
+            flyingButton.style.left = `${left}px`;
+            flyingButton.style.top = `${top}px`;
+            flyingButton.style.width = `${width}px`;
+            flyingButton.style.height = `${height}px`;
+            flyingButton.style.borderRadius = `${radius}px`;
+            flyingButton.style.setProperty('--fly-width', `${width}px`);
+            flyingButton.style.setProperty('--fly-radius', `${radius}px`);
+            flyingButton.style.backgroundColor = `rgb(${20 + 235 * easedProgress}, ${20 + 235 * easedProgress}, ${20 + 235 * easedProgress})`;
+            flyingButton.style.setProperty('--fly-background', flyingButton.style.backgroundColor);
+            flyLabel.style.opacity = easedProgress;
+            flyingButton.querySelector('.svg-icon').style.opacity = 1 - easedProgress;
+
+            if (progress >= 1) {
+                flyingButton.remove();
+                source.classList.remove('hero-lets-go-hidden');
+                backToTop.classList.remove('visible', 'animation-hidden');
+                scrollLinkedTransition = null;
+            }
+        }
+
+        function getHeroButtonAtTop(source) {
+            const rect = source.getBoundingClientRect();
+            return {
+                left: rect.left,
+                top: rect.top + window.scrollY,
+                width: rect.width,
+                height: rect.height
+            };
+        }
+
+        function animateBackToLetsGo() {
+            const source = document.getElementById('heroLetsGo');
+            const backToTop = document.querySelector('.back-to-top');
+
+            if (
+                !source.classList.contains('hero-lets-go-hidden') ||
+                backToTop.classList.contains('animation-hidden')
+            ) {
+                backToTop.classList.remove('visible');
+                return;
+            }
+
+            const startRect = backToTop.getBoundingClientRect();
+            const targetRect = source.getBoundingClientRect();
+
+            backToTop.classList.add('animation-hidden');
+            createButtonTransition(backToTop, source, startRect, targetRect, true);
+        }
+
+        function createButtonTransition(backToTop, source, startRect, targetRect, reverse = false) {
+            const flyingButton = backToTop.cloneNode(true);
+            const flyLabel = document.createElement('span');
+            flyLabel.className = 'fly-label';
+            flyLabel.textContent = "Let's Go!";
+            flyLabel.style.font = getComputedStyle(source).font;
+            flyLabel.style.fontWeight = getComputedStyle(source).fontWeight;
+            flyLabel.style.letterSpacing = getComputedStyle(source).letterSpacing;
+            flyingButton.classList.remove('visible', 'animation-hidden');
+            flyingButton.classList.add('back-to-top-fly');
+            flyingButton.prepend(flyLabel);
+            flyLabel.style.opacity = reverse ? '0' : '1';
+            flyingButton.querySelector('.svg-icon').style.opacity = reverse ? '1' : '0';
+            flyingButton.style.backgroundColor = reverse ? 'rgb(20, 20, 20)' : getComputedStyle(source).backgroundColor;
+            flyingButton.style.left = `${startRect.left}px`;
+            flyingButton.style.top = `${startRect.top}px`;
+            flyingButton.style.width = `${startRect.width}px`;
+            flyingButton.style.height = `${startRect.height}px`;
+            flyingButton.style.right = 'auto';
+            flyingButton.style.bottom = 'auto';
+            flyingButton.style.visibility = 'visible';
+            document.body.appendChild(flyingButton);
+
+            const animation = flyingButton.animate([
+                {
+                    left: `${startRect.left}px`,
+                    top: `${startRect.top}px`,
+                    width: `${startRect.width}px`,
+                    height: `${startRect.height}px`,
+                    borderRadius: '50%',
+                    transform: 'scale(1)',
+                    backgroundColor: 'rgb(20, 20, 20)'
+                },
+                {
+                    left: `${startRect.left + (targetRect.left - startRect.left) * 0.3}px`,
+                    top: `${Math.min(startRect.top, targetRect.top) - 48}px`,
+                    width: `${targetRect.width * 0.92}px`,
+                    height: `${targetRect.height * 0.92}px`,
+                    borderRadius: '40px',
+                    transform: 'scale(1.04)',
+                    offset: 0.38
+                },
+                {
+                    left: `${targetRect.left}px`,
+                    top: `${targetRect.top}px`,
+                    width: `${targetRect.width}px`,
+                    height: `${targetRect.height}px`,
+                    borderRadius: getComputedStyle(source).borderRadius,
+                    transform: 'scale(1)',
+                    backgroundColor: getComputedStyle(source).backgroundColor
+                }
+            ], {
+                duration: 1100,
+                easing: 'cubic-bezier(0.22, 1, 0.36, 1)'
+            });
+
+            flyLabel.animate([{ opacity: reverse ? 0 : 1 }, { opacity: reverse ? 1 : 0 }], {
+                duration: 450,
+                delay: 300,
+                fill: 'forwards',
+                easing: 'ease-out'
+            });
+            flyingButton.querySelector('.svg-icon').animate([
+                { opacity: reverse ? 1 : 0 },
+                { opacity: reverse ? 0 : 1 }
+            ], {
+                duration: 450,
+                delay: 450,
+                fill: 'forwards',
+                easing: 'ease-in'
+            });
+
+            animation.onfinish = () => {
+                flyingButton.remove();
+                source.classList.remove('hero-lets-go-hidden');
+                backToTop.classList.remove('visible', 'animation-hidden');
+            }
+        }
+
+        window.addEventListener("scroll", updateScrollLinkedTransition);
+        window.addEventListener("scroll", updateBackToTop);
         
         function initPage() {
             const activeTab = document.querySelector('.tab.active') || document.querySelector('.tab');
@@ -972,6 +1712,21 @@
                 updateGlider(activeTab);
             }
             reveal();
+            updateBackToTop();
+        }
+
+        const floatingSocials = document.querySelector('.floating-socials');
+        if (floatingSocials) {
+            const socialSlots = floatingSocials.querySelectorAll('.floating-social-slot');
+            socialSlots.forEach(slot => {
+                slot.querySelector('.floating-social').addEventListener('pointerenter', () => {
+                    socialSlots.forEach(item => item.classList.remove('expanded'));
+                    slot.classList.add('expanded');
+                });
+            });
+            floatingSocials.addEventListener('pointerleave', () => {
+                socialSlots.forEach(slot => slot.classList.remove('expanded'));
+            });
         }
 
         // 初始載入時先定位滑動塊與 reveal
